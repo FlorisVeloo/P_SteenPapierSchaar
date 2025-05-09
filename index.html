@@ -2,16 +2,158 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joop van het Groenewoud</title>
+  <title>Steen Papier Schaar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #222;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .choices {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .choice {
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      border: 2px solid white;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+
+    .choice:hover {
+      transform: scale(1.1);
+    }
+
+    .result {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    .fixed-left,
+    .fixed-right {
+      position: fixed;
+      bottom: 20px;
+      width: 80px;
+      height: auto;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .fixed-left {
+      left: 20px;
+    }
+
+    .fixed-right {
+      right: 20px;
+    }
+
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .video-overlay iframe {
+      width: 80vw;
+      height: 45vw;
+      max-width: 960px;
+      max-height: 540px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      z-index: 101;
+    }
+  </style>
 </head>
-<body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:Arial,sans-serif;background-color:#222;color:#fff;">
-  <div id="title" style="text-align:center;">
-    <h1>
-      <a href="https://snake.joopvanhetgroenewoud.nl" style="color:#61dafb;text-decoration:none;">Joop</a> van het Groenewoud
-    </h1>
-    <hr style="width:50%;border:1px solid #444;">
-    <span class="subtitle" style="font-size:1.2em;color:#bbb;">De Opkomst van een Leidse One-Man-Band sensatie</span>
-  </div>
+<body>
+
+<h1>Speel Steen Papier Schaar</h1>
+
+<div class="choices">
+  <img src="Steen.png" alt="Steen" class="choice" onclick="play('steen')">
+  <img src="Papier.png" alt="Papier" class="choice" onclick="play('papier')">
+  <img src="Schaar.png" alt="Schaar" class="choice" onclick="play('schaar')">
+</div>
+
+<div class="result" id="result">Maak je keuze!</div>
+
+<!-- Vaste afbeeldingen linksonder en rechtsonder -->
+<img src="Wolkje1.png" alt="Video" class="fixed-left" onclick="showVideo()">
+
+<a href="https://schaken.joopvanhetgroenewoud.nl" target="_blank">
+  <img src="Wolkje2.png" alt="Schaken link" class="fixed-right">
+</a>
+
+<!-- YouTube Video Overlay -->
+<div id="videoOverlay" class="video-overlay" style="display: none;">
+  <div class="close-btn" onclick="hideVideo()">×</div>
+  <iframe id="videoFrame" src="" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+</div>
+
+<script>
+  const options = ['steen', 'papier', 'schaar'];
+
+  function play(userChoice) {
+    const computerChoice = options[Math.floor(Math.random() * 3)];
+    let result = '';
+
+    if (userChoice === computerChoice) {
+      result = `Gelijkspel! Beiden kozen ${userChoice}`;
+    } else if (
+      (userChoice === 'steen' && computerChoice === 'schaar') ||
+      (userChoice === 'papier' && computerChoice === 'steen') ||
+      (userChoice === 'schaar' && computerChoice === 'papier')
+    ) {
+      result = `Jij wint! ${userChoice} verslaat ${computerChoice}`;
+    } else {
+      result = `Computer wint! ${computerChoice} verslaat ${userChoice}`;
+    }
+
+    document.getElementById('result').textContent = result;
+  }
+
+  function showVideo() {
+    const overlay = document.getElementById('videoOverlay');
+    const iframe = document.getElementById('videoFrame');
+    iframe.src = 'https://www.youtube.com/embed/NYB1wJ99FZo?autoplay=1';
+    overlay.style.display = 'flex';
+  }
+
+  function hideVideo() {
+    const overlay = document.getElementById('videoOverlay');
+    const iframe = document.getElementById('videoFrame');
+    iframe.src = '';
+    overlay.style.display = 'none';
+  }
+</script>
+
 </body>
 </html>
