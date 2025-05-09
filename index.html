@@ -2,28 +2,36 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Steen Papier Schaar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joop van het Groenewoud - Steen Papier Schaar</title>
   <style>
     body {
       margin: 0;
-      font-family: sans-serif;
-      background: #222;
-      color: white;
+      height: 100vh;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 50px;
-      overflow-x: hidden;
+      justify-content: center;
+      background-color: black;
+      position: relative;
+      overflow: hidden;
     }
 
-    h1 {
-      margin-bottom: 20px;
+    #background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.9;
     }
 
     .choices {
       display: flex;
-      gap: 30px;
-      margin-bottom: 30px;
+      gap: 20px;
+      margin-bottom: 20px;
     }
 
     .choice {
@@ -32,128 +40,101 @@
       cursor: pointer;
       border: 2px solid white;
       border-radius: 10px;
-      transition: transform 0.2s;
     }
 
-    .choice:hover {
-      transform: scale(1.1);
-    }
-
-    .result {
-      font-size: 24px;
-      margin-top: 20px;
-    }
-
-    .fixed-left,
-    .fixed-right {
-      position: fixed;
-      bottom: 20px;
-      width: 80px;
-      height: auto;
-      cursor: pointer;
-      z-index: 10;
-    }
-
-    .fixed-left {
-      left: 20px;
-    }
-
-    .fixed-right {
-      right: 20px;
-    }
-
-    .video-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
-    }
-
-    .video-overlay iframe {
-      width: 80vw;
-      height: 45vw;
-      max-width: 960px;
-      max-height: 540px;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 40px;
+    .result, .score {
       color: white;
+      font-size: 24px;
+      margin: 10px;
+    }
+
+    .overlay-image {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
       cursor: pointer;
-      z-index: 101;
+      display: none;
     }
   </style>
 </head>
 <body>
+  <img id="background" src="koek.png" alt="Achtergrond">
 
-<h1>Speel Steen Papier Schaar</h1>
+  <div class="choices">
+    <img src="steen.png" class="choice" onclick="play('steen')" alt="Steen">
+    <img src="papier.png" class="choice" onclick="play('papier')" alt="Papier">
+    <img src="schaar.png" class="choice" onclick="play('schaar')" alt="Schaar">
+  </div>
 
-<div class="choices">
-  <img src="Steen.png" alt="Steen" class="choice" onclick="play('steen')">
-  <img src="Papier.png" alt="Papier" class="choice" onclick="play('papier')">
-  <img src="Schaar.png" alt="Schaar" class="choice" onclick="play('schaar')">
-</div>
+  <div class="result" id="result">Maak je keuze!</div>
+  <div class="score" id="score">Jij: 0 - Computer: 0</div>
 
-<div class="result" id="result">Maak je keuze!</div>
+  <img id="loseRedirect" class="overlay-image" src="Wolkje.png" onclick="location.href='https://schaken.joopvanhetgroenewoud.nl'">
+  <img id="winRedirect" class="overlay-image" src="Wolkje.png" onclick="location.href='https://schaken.joopvanhetgroenewoud.nl'">
+  <img id="continueGame" class="overlay-image" src="Wolkje.png" onclick="continueGame()">
+  <img id="puntWinst" class="overlay-image" src="Wolkje.png">
+  <img id="puntVerlies" class="overlay-image" src="Wolkje.png">
 
-<!-- Vaste afbeeldingen linksonder en rechtsonder -->
-<img src="Wolkje1.png" alt="Video" class="fixed-left" onclick="showVideo()">
+  <script>
+    let userScore = 0;
+    let computerScore = 0;
+    let roundsPlayed = 0;
+    let paused = false;
 
-<a href="https://schaken.joopvanhetgroenewoud.nl" target="_blank">
-  <img src="Wolkje2.png" alt="Schaken link" class="fixed-right">
-</a>
+    const options = ['steen', 'papier', 'schaar'];
 
-<!-- YouTube Video Overlay -->
-<div id="videoOverlay" class="video-overlay" style="display: none;">
-  <div class="close-btn" onclick="hideVideo()">×</div>
-  <iframe id="videoFrame" src="" frameborder="0" allowfullscreen allow="autoplay"></iframe>
-</div>
+    function play(userChoice) {
+      if (paused) return;
 
-<script>
-  const options = ['steen', 'papier', 'schaar'];
+      const computerChoice = options[Math.floor(Math.random() * 3)];
+      let resultText = '';
 
-  function play(userChoice) {
-    const computerChoice = options[Math.floor(Math.random() * 3)];
-    let result = '';
+      if (userChoice === computerChoice) {
+        resultText = `Gelijkspel! Beiden kozen ${userChoice}`;
+      } else if (
+        (userChoice === 'steen' && computerChoice === 'schaar') ||
+        (userChoice === 'papier' && computerChoice === 'steen') ||
+        (userChoice === 'schaar' && computerChoice === 'papier')
+      ) {
+        userScore++;
+        resultText = `Je wint! ${userChoice} verslaat ${computerChoice}`;
+        showTempImage('puntWinst');
+      } else {
+        computerScore++;
+        resultText = `Computer wint! ${computerChoice} verslaat ${userChoice}`;
+        showTempImage('puntVerlies');
+      }
 
-    if (userChoice === computerChoice) {
-      result = `Gelijkspel! Beiden kozen ${userChoice}`;
-    } else if (
-      (userChoice === 'steen' && computerChoice === 'schaar') ||
-      (userChoice === 'papier' && computerChoice === 'steen') ||
-      (userChoice === 'schaar' && computerChoice === 'papier')
-    ) {
-      result = `Jij wint! ${userChoice} verslaat ${computerChoice}`;
-    } else {
-      result = `Computer wint! ${computerChoice} verslaat ${userChoice}`;
+      roundsPlayed++;
+      document.getElementById('result').textContent = resultText;
+      document.getElementById('score').textContent = `Jij: ${userScore} - Computer: ${computerScore}`;
+
+      if (userScore === 3) {
+        document.getElementById('winRedirect').style.display = 'block';
+        paused = true;
+      } else if (computerScore === 3) {
+        document.getElementById('loseRedirect').style.display = 'block';
+        paused = true;
+      } else if (userScore === 2 && roundsPlayed >= 3) {
+        paused = true;
+        document.getElementById('continueGame').style.display = 'block';
+      }
     }
 
-    document.getElementById('result').textContent = result;
-  }
+    function continueGame() {
+      document.getElementById('continueGame').style.display = 'none';
+      paused = false;
+    }
 
-  function showVideo() {
-    const overlay = document.getElementById('videoOverlay');
-    const iframe = document.getElementById('videoFrame');
-    iframe.src = 'https://www.youtube.com/embed/NYB1wJ99FZo?autoplay=1';
-    overlay.style.display = 'flex';
-  }
-
-  function hideVideo() {
-    const overlay = document.getElementById('videoOverlay');
-    const iframe = document.getElementById('videoFrame');
-    iframe.src = '';
-    overlay.style.display = 'none';
-  }
-</script>
-
+    function showTempImage(id) {
+      const img = document.getElementById(id);
+      img.style.display = 'block';
+      setTimeout(() => {
+        img.style.display = 'none';
+      }, 1500);
+    }
+  </script>
 </body>
 </html>
