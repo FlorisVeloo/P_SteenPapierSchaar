@@ -99,17 +99,17 @@
         (userChoice === 'schaar' && computerChoice === 'papier')
       ) {
         userScore++;
-        resultText = `Je wint! ${userChoice} verslaat ${computerChoice}`;
+        resultText = `Jij wint! ${userChoice} verslaat ${computerChoice}`;
         showTempImage('puntWinst');
       } else {
         computerScore++;
-        resultText = `Computer wint! ${computerChoice} verslaat ${userChoice}`;
+        resultText = `Joop wint! ${computerChoice} verslaat ${userChoice}`;
         showTempImage('puntVerlies');
       }
 
       roundsPlayed++;
       document.getElementById('result').textContent = resultText;
-      document.getElementById('score').textContent = `Jij: ${userScore} - Computer: ${computerScore}`;
+      document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
 
       if (userScore === 3) {
         document.getElementById('winRedirect').style.display = 'block';
