@@ -57,10 +57,21 @@
       cursor: pointer;
       display: none;
     }
+    .overlay-static {
+      position: fixed;
+      top: 10%;
+      left: 80%;
+      width: 150px; /* pas aan naar wens */
+      height: auto;
+      z-index: 10; /* hoger dan #background (z-index: -1), maar lager dan overlay-image (z-index: 1000) */
+      pointer-events: none; /* zorgt dat het plaatje geen klikken blokkeert */
+    }
+
   </style>
 </head>
 <body>
   <img id="background" src="Joop.png" alt="Achtergrond">
+  <img id="wolkjejoop" src="Wolkje_versla.png" alt="Decoratie" class="overlay-static">
 
   <div class="choices">
     <img src="Koek.png" class="choice" onclick="play('steen')" alt="Steen">
