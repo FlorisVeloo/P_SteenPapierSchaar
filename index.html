@@ -89,6 +89,15 @@
   <img id="puntVerlies" class="overlay-image" src="Wolkje4.png">
 
   <script>
+    function vertaalKeuze(keuze) {
+      switch (keuze) {
+        case 'steen': return 'water';
+        case 'papier': return 'plant';
+        case 'schaar': return 'vuur';
+        default: return keuze;
+      }
+   }
+
     let userScore = 0;
     let computerScore = 0;
     let roundsPlayed = 0;
@@ -103,18 +112,18 @@
       let resultText = '';
 
       if (userChoice === computerChoice) {
-        resultText = `Gelijkspel! Beiden kozen ${userChoice}`;
+        resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
       } else if (
         (userChoice === 'steen' && computerChoice === 'schaar') ||
         (userChoice === 'papier' && computerChoice === 'steen') ||
         (userChoice === 'schaar' && computerChoice === 'papier')
       ) {
         userScore++;
-        resultText = `Jij wint! ${userChoice} verslaat ${computerChoice}`;
+        resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
         showTempImage('puntWinst');
       } else {
         computerScore++;
-        resultText = `Joop wint! ${computerChoice} verslaat ${userChoice}`;
+        resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
         showTempImage('puntVerlies');
       }
 
