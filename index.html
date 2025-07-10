@@ -104,45 +104,49 @@
     let paused = false;
 
     const options = ['steen', 'papier', 'schaar'];
+    
+function play(userChoice) {
+  if (paused) return;
 
-    function play(userChoice) {
-      if (paused) return;
+  const computerChoice = options[Math.floor(Math.random() * 3)];
+  let resultText = '';
 
-      const computerChoice = options[Math.floor(Math.random() * 3)];
-      let resultText = '';
+  if (userChoice === computerChoice) {
+    resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
+  } else if (
+    (userChoice === 'steen' && computerChoice === 'schaar') ||
+    (userChoice === 'papier' && computerChoice === 'steen') ||
+    (userChoice === 'schaar' && computerChoice === 'papier')
+  ) {
+    userScore++;
+    resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
+    showTempImage('puntWinst');
+  } else {
+    computerScore++;
+    resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
+    showTempImage('puntVerlies');
+  }
 
-      if (userChoice === computerChoice) {
-        resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
-      } else if (
-        (userChoice === 'steen' && computerChoice === 'schaar') ||
-        (userChoice === 'papier' && computerChoice === 'steen') ||
-        (userChoice === 'schaar' && computerChoice === 'papier')
-      ) {
-        userScore++;
-        resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
-        showTempImage('puntWinst');
-      } else {
-        computerScore++;
-        resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
-        showTempImage('puntVerlies');
-      }
+  roundsPlayed++;
+  document.getElementById('result').textContent = resultText;
+  document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
 
-      roundsPlayed++;
-      document.getElementById('result').textContent = resultText;
-      document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
-
-      if (userScore === 3) {
-        document.getElementById('winRedirect').style.display = 'block';
-        paused = true;
-      } else if (computerScore === 3) {
-        document.getElementById('loseRedirect').style.display = 'block';
-        paused = true;
-      } else if (userScore === 2 && roundsPlayed >= 3) {
-        paused = true;
-        document.getElementById('continueGame').style.display = 'block';
-      }
-    }
-
+  if (userScore === 3) {
+    document.getElementById('winRedirect').style.display = 'block';
+    paused = true;
+  } else if (computerScore === 3) {
+    document.getElementById('loseRedirect').style.display = 'block';
+    paused = true;
+  } else if (
+    (userScore === 2 || computerScore === 2) &&
+    !(userScore === 2 && computerScore === 2) &&
+    !(userScore === 1 && computerScore === 1)
+  ) {
+    // Alleen tonen bij 2-1 of 1-2, niet bij 2-2 of 1-1
+    paused = true;
+    document.getElementById('continueGame').style.display = 'block';
+  }
+}
     function continueGame() {
       document.getElementById('continueGame').style.display = 'none';
       paused = false;
