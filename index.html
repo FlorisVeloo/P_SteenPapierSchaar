@@ -145,11 +145,11 @@ function play(userChoice) {
     !(userScore === 2 && computerScore === 2) &&
     !(userScore === 1 && computerScore === 1)
   ) {
-    // Uitsluiten: Joop van 1-1 naar 2-1, of Joop staat 2-0 voor
-    const isJoopVan1Naar2 = previousUserScore === 1 && previousComputerScore === 1 && computerScore === 2;
-    const isJoopNaar2_0 = previousUserScore === 0 && previousComputerScore === 1 && computerScore === 2;
+    // Alleen tonen als Joop nu achter staat met 2-0 of 2-1
+    const joopAchterMet2_0 = userScore === 2 && computerScore === 0;
+    const joopAchterMet2_1 = userScore === 2 && computerScore === 1;
 
-    if (!isJoopVan1Naar2 && !isJoopNaar2_0) {
+    if (joopAchterMet2_0 || joopAchterMet2_1) {
       paused = true;
       document.getElementById('continueGame').style.display = 'block';
     }
