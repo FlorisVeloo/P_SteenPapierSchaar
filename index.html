@@ -111,6 +111,9 @@ function play(userChoice) {
   const computerChoice = options[Math.floor(Math.random() * 3)];
   let resultText = '';
 
+  const previousUserScore = userScore;
+  const previousComputerScore = computerScore;
+
   if (userChoice === computerChoice) {
     resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
   } else if (
@@ -142,9 +145,14 @@ function play(userChoice) {
     !(userScore === 2 && computerScore === 2) &&
     !(userScore === 1 && computerScore === 1)
   ) {
-    // Alleen tonen bij 2-1 of 1-2, niet bij 2-2 of 1-1
-    paused = true;
-    document.getElementById('continueGame').style.display = 'block';
+    // Uitsluiten: Joop van 1-1 naar 2-1, of Joop staat 2-0 voor
+    const isJoopVan1Naar2 = previousUserScore === 1 && previousComputerScore === 1 && computerScore === 2;
+    const isJoopNaar2_0 = previousUserScore === 0 && previousComputerScore === 1 && computerScore === 2;
+
+    if (!isJoopVan1Naar2 && !isJoopNaar2_0) {
+      paused = true;
+      document.getElementById('continueGame').style.display = 'block';
+    }
   }
 }
     function continueGame() {
