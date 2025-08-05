@@ -64,10 +64,14 @@ body {
     }
 
     .overlay-image {
-      position: fixed;
-      top: 50%;
+      position: absolute;
       left: 50%;
-      transform: translate(-50%, -50%);
+      top: 50%;
+      transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      );
+      text-align: center;
       z-index: 1000;
       cursor: pointer;
       display: none;
@@ -76,7 +80,7 @@ body {
       position: fixed;
       top: 5%;
       left: 75%;
-      width: 450px; /* pas aan naar wens */
+      width: var(--cloud-width);
       height: auto;
       z-index: 10; /* hoger dan #background (z-index: -1), maar lager dan overlay-image (z-index: 1000) */
       pointer-events: none; /* zorgt dat het plaatje geen klikken blokkeert */
