@@ -47,6 +47,14 @@ body {
       display: flex;
       gap: 20px;
       margin-bottom: 20px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      );
+      text-align: center;
     }
 
     .choice {
