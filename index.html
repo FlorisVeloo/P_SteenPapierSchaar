@@ -11,7 +11,7 @@
       --title-x-shift2: clamp(20vw, 25vw, 30vw);
       --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
       --cloud-width: min(50vw, 450px);
-      --cloud-width2: min(50vw, 450px);
+      --cloud-width2: min(45vw, 450px);
       --bg-size: cover;
       --font-size: clamp(0.9rem, 1vw + 0.5rem, 1.5rem);
     }
@@ -83,7 +83,7 @@
         calc(-50% + var(--title-x-shift)),
         calc(-50% + var(--title-y-shift))
       );
-      width: var(--cloud-width2);
+      width: var(--cloud-width);
       text-align: center;
       z-index: 1000;
       cursor: pointer;
@@ -98,7 +98,7 @@
         calc(-50% + var(--title-x-shift2)),
         calc(-50% + var(--title-y-shift2))
       );
-      width: var(--cloud-width);
+      width: var(--cloud-width2);
       height: auto;
       z-index: 10;
       pointer-events: none;
