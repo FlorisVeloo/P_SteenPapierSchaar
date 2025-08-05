@@ -5,19 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Joop van het Groenewoud - Steen Papier Schaar</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: black;
-      position: relative;
-      overflow: hidden;
+    :root {
+      /* Horizontale en verticale verschuiving vanaf midden (50%/50%) */
+      --title-x-shift: clamp(-25vw, -28vw, -35vw);
+      --title-y-shift: clamp(20vh, 21vh, 25vh); /* - is omhoog, + naar beneden */
+      --cloud-width: min(50vw, 450px);
+      --bg-size: cover;
+      --font-size: clamp(0.9rem, 1vw + 0.5rem, 1.5rem);
     }
+html {
+  height: 100%;
+  margin: 0;
+  overflow-y: auto;
+  overscroll-behavior: auto;
+  position: static;
+  width: 100%;
+}
 
+body {
+  margin: 0;
+  height: 100vh;      /* Fallback voor browsers zonder 100dvh */
+  height: 100dvh;     /* Voorkomt "glitchy" hoogte op mobiel met toolbars */
+  max-height: 100vh;  /* Extra bescherming tegen overscroll op sommige browsers */
+  overflow: hidden;   /* Geen scrollen mogelijk */
+  font-family: Arial, sans-serif;
+  font-size: var(--font-size);
+  background-color: black;
+  position: relative; /* voorkomt ongewenste verschuivingen van absolute elementen */
+}
     #background {
       position: fixed;
       top: 0;
@@ -66,6 +81,53 @@
       z-index: 10; /* hoger dan #background (z-index: -1), maar lager dan overlay-image (z-index: 1000) */
       pointer-events: none; /* zorgt dat het plaatje geen klikken blokkeert */
     }
+    /* ========== ORIENTATION: LANDSCAPE ========== */
+@media (orientation: landscape) {
+  :root {
+    --cloud-width: clamp(200px, 15vw, 800px);
+  }
+  #background {
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    background-position: center top;
+  }
+}
+
+/* ========== ORIENTATION: PORTRAIT ========== */
+@media (orientation: portrait) {
+  #background {
+    background-size: cover;
+    background-position: 65% center;
+  }
+}
+
+/* ========== SMALL DEVICES (max 320px) ========== */
+@media (max-width: 320px) {
+  :root {
+    --cloud-width: min(50vw, 300px);
+  }
+}
+
+/* ========== LANDSCAPE TWEAKS (kleine hoogte) ========== */
+@media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
+  :root {
+    --cloud-width: clamp(250px, 20vw, 500px);
+  }
+}
+
+/* ========== DESKTOP ========== */
+@media (min-width: 1025px) {
+  :root {
+    --cloud-width: clamp(300px, 15vw, 600px);
+  }
+}
+
+/* ========== ULTRA-WIDE SCREENS ========== */
+@media (min-width: 1921px) {
+  :root {
+    --cloud-width: clamp(300px, 12vw, 600px);
+  }
+}
 
   </style>
 </head>
