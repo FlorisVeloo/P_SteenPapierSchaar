@@ -6,8 +6,8 @@
   <title>Joop van het Groenewoud - Steen Papier Schaar</title>
   <style>
     :root {
-      --title-x-shift: clamp(55vw, 60vw, 65vw);
-      --title-y-shift: clamp(-40vh, -35vh, -30vh);
+      --title-x-shift: clamp(0vw, 5vw, 10vw);
+      --title-y-shift: clamp(-25vh, -26vh, -30vh); /* - is omhoog, + naar beneden */
       --cloud-width: min(50vw, 450px);
       --bg-size: cover;
       --font-size: clamp(0.9rem, 1vw + 0.5rem, 1.5rem);
@@ -103,7 +103,8 @@
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
-        --cloud-width: clamp(200px, 15vw, 800px);
+        --title-x-shift: clamp(-10vw, -3vw, -1vw);
+        --cloud-width: clamp(150px, 25vw, 800px);
       }
       #background {
         background-size: auto 100%;
@@ -118,27 +119,42 @@
         background-position: center center;
       }
     }
-
+    /* ========== SMALL DEVICES (max 320px) ========== */
     @media (max-width: 320px) {
       :root {
-        --cloud-width: min(50vw, 300px);
+        --title-x-shift: clamp(2vw, 5vw, 8vw);
       }
     }
 
     @media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
       :root {
-        --cloud-width: clamp(250px, 20vw, 500px);
+        --title-x-shift: clamp(-5vw, -2vw, 0vw);
+        --title-y-shift: clamp(-28vh, -30vh, -33vh);
       }
     }
 
+    @media (min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape) {
+      :root {
+        --title-x-shift: clamp(-7vw, -3vw, -2vw);
+        --title-y-shift: clamp(-30vh, -27vh, -25vh);
+      }
+    }
+    
+    /* ========== DESKTOP LAYOUT TWEAKS ========== */
+    /* ========== DESKTOP (min-width: 1025px) ========== */
     @media (min-width: 1025px) {
       :root {
+        --title-x-shift: clamp(10vw, 12vw, 15vw);
+        --title-y-shift: clamp(-30vh, -32vh, -35vh);
         --cloud-width: clamp(300px, 15vw, 600px);
       }
     }
 
+    /* ========== ULTRA-WIDE SCREENS (min-width: 1921px) ========== */
     @media (min-width: 1921px) {
       :root {
+        --title-x-shift: clamp(10vw, 11vw, 12vw);
+        --title-y-shift: clamp(-22vh, -24vh, -26vh);
         --cloud-width: clamp(300px, 12vw, 600px);
       }
     }
