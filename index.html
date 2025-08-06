@@ -150,16 +150,25 @@ html {
 
     @media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
       :root {
-        --title-x-shift: clamp(-5vw, -2vw, 0vw);
-        --title-y-shift: clamp(-28vh, -30vh, -33vh);
+        --title-x-shift: clamp(20vw, 25vw, 30vw);
+        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-x-shift2: clamp(20vw, 25vw, 30vw);
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --cloud-width: min(30vw, 450px);
+        --cloud-width2: min(25vw, 450px);
       }
     }
 
     @media (min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape) {
       :root {
-        --title-x-shift: clamp(-7vw, -3vw, -2vw);
-        --title-y-shift: clamp(-30vh, -27vh, -25vh);
+        --title-x-shift: clamp(20vw, 25vw, 30vw);
+        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-x-shift2: clamp(20vw, 25vw, 30vw);
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --cloud-width: min(30vw, 450px);
+        --cloud-width2: min(25vw, 450px);
       }
+      
   body {
     justify-content: flex-end;
     padding-bottom: 40px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
@@ -169,12 +178,13 @@ html {
     margin-bottom: 40px; /* extra ruimte onder choices */
   }
     .choice {
-      width: 120px;
-      height: 120px;
+      width: 60px;
+      height: 60px;
     }
   .result,
   .score {
     margin-top: 20px;
+    font-size: 28px;
   }
     }
     
