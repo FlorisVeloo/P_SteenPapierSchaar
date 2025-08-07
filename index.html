@@ -131,20 +131,24 @@ html {
       
   body {
       justify-content: center;
-      padding-bottom: 20px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      padding-bottom: 5px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
   }
     .choice {
       width: clamp(20vh, 25vh, 30vh);
       height: clamp(20vh, 25vh, 30vh);
     }
+.choices {
+  margin-top: 10px;
+}
   .result,
   .score {
     font-size: clamp(16px, 26px, 48px);
+    margin-bottom: 10px;
   }
       #background {
         background-size: cover;
         background-repeat: repeat-x;
-        background-position: center top;
+        background-position: center 20%;
       }
     }
 
@@ -301,9 +305,7 @@ html {
   <div class="result" id="result">Maak je keuze!</div>
   <div class="score" id="score">Jij: 0 - Joop: 0</div>
 
-  <a href="https://joopvanhetgroenewoud.nl" title="https://www.joopvanhetgroenewoud.nl">
-    <img id="loseRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect" onclick="location.href='https://www.joopvanhetgroenewoud.nl'" />
-  </a>
+  <img id="loseRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect" onclick="location.href='https://www.joopvanhetgroenewoud.nl'" />
 
   <img id="winRedirect" class="overlay-image" src="Wolkje7.png" onclick="location.href='https://onderweg4.joopvanhetgroenewoud.nl'"/>
   <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
