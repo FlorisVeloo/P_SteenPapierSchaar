@@ -106,6 +106,18 @@ html {
       pointer-events: none;
     }
 
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .fade-in-out {
+      display: block !important;
+      animation: fadeInOut 1.5s ease-in-out;
+    }
+
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
@@ -294,29 +306,25 @@ html {
 </head>
 <body>
   <div id="background" style="background-image: url('Joop.png');"></div>
-  <img id="wolkjejoop" src="Wolkje_versla.png" alt="Decoratie" class="overlay-static">
+  <img id="wolkjejoop" src="Wolkje_versla.png" alt="Decoratie" class="overlay-static"/>
 
   <div class="choices">
-    <img src="Water1.png" class="choice" onclick="play('steen')" alt="Water">
-    <img src="Plant1.png" class="choice" onclick="play('papier')" alt="Plant">
-    <img src="Vuur1.png" class="choice" onclick="play('schaar')" alt="Vuur">
+    <img src="Water1.png" class="choice" onclick="play('steen')" alt="Water"/>
+    <img src="Plant1.png" class="choice" onclick="play('papier')" alt="Plant"/>
+    <img src="Vuur1.png" class="choice" onclick="play('schaar')" alt="Vuur"/>
   </div>
 
   <div class="result" id="result">Maak je keuze!</div>
   <div class="score" id="score">Jij: 0 - Joop: 0</div>
 
   <a href="https://joopvanhetgroenewoud.nl" title="https://www.joopvanhetgroenewoud.nl">
-    <img id="loseRedirect"
-         class="overlay-image"
-         src="Wolkje6.png"
-         alt="Joop redirect"
-         onclick="location.href='https://www.joopvanhetgroenewoud.nl'">
+    <img id="loseRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect" onclick="location.href='https://www.joopvanhetgroenewoud.nl'" />
   </a>
 
-  <img id="winRedirect" class="overlay-image" src="Wolkje7.png" onclick="location.href='https://onderweg4.joopvanhetgroenewoud.nl'">
-  <img id="continueGame" class="overlay-image" src="Wolkje5.png"
-  <img id="puntWinst" class="overlay-image" src="Wolkje3.png">
-  <img id="puntVerlies" class="overlay-image" src="Wolkje4.png">
+  <img id="winRedirect" class="overlay-image" src="Wolkje7.png" onclick="location.href='https://onderweg4.joopvanhetgroenewoud.nl'"/>
+  <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
+  <img id="puntWinst" class="overlay-image" src="Wolkje3.png"/>
+  <img id="puntVerlies" class="overlay-image" src="Wolkje4.png"/>
 
   <script>
     function vertaalKeuze(keuze) {
@@ -372,18 +380,24 @@ html {
       ) {
         const joopAchterMet2_0 = userScore === 2 && computerScore === 0;
         const joopAchterMet2_1 = userScore === 2 && computerScore === 1;
-        
-if (joopAchterMet2_0 || joopAchterMet2_1) {
-  paused = true;
-  showTempImage('continueGame');
-  setTimeout(() => {
-    paused = false;
-  }, 1500);
-}      
+
+        if (joopAchterMet2_0 || joopAchterMet2_1) {
+          paused = true;
+          showTempImage('continueGame');
+          setTimeout(() => {
+            paused = false;
+          }, 1500);
+        }
+      }
+    }
+
     function showTempImage(id) {
       const img = document.getElementById(id);
-      img.style.display = 'block';
+      img.classList.add('fade-in-out');
+
+      // Verwijder de klasse na de animatie om opnieuw te kunnen gebruiken
       setTimeout(() => {
+        img.classList.remove('fade-in-out');
         img.style.display = 'none';
       }, 1500);
     }
