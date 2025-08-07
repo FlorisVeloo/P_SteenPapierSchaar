@@ -325,6 +325,8 @@ html {
   <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
   <img id="puntWinst" class="overlay-image" src="Wolkje3.png"/>
   <img id="puntVerlies" class="overlay-image" src="Wolkje4.png"/>
+  <img id="wolkje_2_uit_3" class="overlay-image" src="Wolkje_2_uit_3.png" />
+  <img id="wolkje_grrr" class="overlay-image" src="Wolkje_grrr.png" />
 
   <script>
     function vertaalKeuze(keuze) {
@@ -342,54 +344,63 @@ html {
 
     const options = ['steen', 'papier', 'schaar'];
 
-    function play(userChoice) {
-      if (paused) return;
+function play(userChoice) {
+  if (paused) return;
 
-      const computerChoice = options[Math.floor(Math.random() * 3)];
-      let resultText = '';
+  const computerChoice = options[Math.floor(Math.random() * 3)];
+  let resultText = '';
 
-      if (userChoice === computerChoice) {
-        resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
-      } else if (
-        (userChoice === 'steen' && computerChoice === 'schaar') ||
-        (userChoice === 'papier' && computerChoice === 'steen') ||
-        (userChoice === 'schaar' && computerChoice === 'papier')
-      ) {
-        userScore++;
-        resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
-        showTempImage('puntWinst');
-      } else {
-        computerScore++;
-        resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
-        showTempImage('puntVerlies');
-      }
+  const previousUserScore = userScore;
+  const previousComputerScore = computerScore;
 
-      document.getElementById('result').textContent = resultText;
-      document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
+  if (userChoice === computerChoice) {
+    resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
+  } else if (
+    (userChoice === 'steen' && computerChoice === 'schaar') ||
+    (userChoice === 'papier' && computerChoice === 'steen') ||
+    (userChoice === 'schaar' && computerChoice === 'papier')
+  ) {
+    // Speler wint
+    userScore++;
 
-      if (userScore === 3) {
-        document.getElementById('winRedirect').style.display = 'block';
-        paused = true;
-      } else if (computerScore === 3) {
-        document.getElementById('loseRedirect').style.display = 'block';
-        paused = true;
-      } else if (
-        (userScore === 2 || computerScore === 2) &&
-        !(userScore === 2 && computerScore === 2) &&
-        !(userScore === 1 && computerScore === 1)
-      ) {
-        const joopAchterMet2_0 = userScore === 2 && computerScore === 0;
-        const joopAchterMet2_1 = userScore === 2 && computerScore === 1;
+    resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
 
-        if (joopAchterMet2_0 || joopAchterMet2_1) {
-          paused = true;
-          showTempImage('continueGame');
-          setTimeout(() => {
-            paused = false;
-          }, 1500);
-        }
-      }
+    // 🔽 Wolkjeslogica voor speler die scoort
+    if (previousUserScore === 0 && previousComputerScore === 0 && userScore === 1) {
+      showTempImage('puntWinst');
+      setTimeout(() => {
+        showTempImage('wolkje_2_uit_3');
+      }, 1600);
+    } else if (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) {
+      showTempImage('continueGame'); // Wolkje5
+    } else if (
+      (previousUserScore === 0 && previousComputerScore === 1 && userScore === 1) ||
+      (previousUserScore === 1 && previousComputerScore === 2 && userScore === 2)
+    ) {
+      showTempImage('wolkje_grrr');
+    } else {
+      showTempImage('puntWinst');
     }
+
+  } else {
+    // Joop wint
+    computerScore++;
+    resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
+    showTempImage('puntVerlies');
+  }
+
+  document.getElementById('result').textContent = resultText;
+  document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
+
+  // Redirects
+  if (userScore === 3) {
+    document.getElementById('winRedirect').style.display = 'block';
+    paused = true;
+  } else if (computerScore === 3) {
+    document.getElementById('loseRedirect').style.display = 'block';
+    paused = true;
+  }
+}
 
 function showTempImage(id) {
   const img = document.getElementById(id);
