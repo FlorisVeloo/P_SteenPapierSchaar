@@ -88,8 +88,9 @@ html {
       width: var(--cloud-width);
       text-align: center;
       z-index: 1000;
-      cursor: pointer;
       opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
     }
 
     .overlay-static {
@@ -104,6 +105,7 @@ html {
       height: auto;
       z-index: 10;
       pointer-events: none;
+      cursor: pointer;
     }
 
   #wolkje_versla {
@@ -127,6 +129,13 @@ html {
   display: none;
   opacity: 0;
   transition: opacity 0.5s ease;
+}
+
+
+/* Alleen deze twee mogen wél aanklikbaar zijn */
+#winRedirect, #lossRedirect {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
     /* Responsive achtergrond */
@@ -407,30 +416,33 @@ function play(userChoice) {
 
   // Redirects
 if (userScore === 3) {
-  paused = true;
-
-  // Toon winRedirect wolkje
+  // Speler wint
   const winRedirect = document.getElementById('winRedirect');
   winRedirect.style.display = 'block';
   winRedirect.style.opacity = 1;
-
-  // Voeg click-handler toe om door te sturen
   winRedirect.onclick = () => {
     window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
   };
-  
-  } else if (computerScore === 3) {
-// Eerst wolkje4 tonen
-showTempImage('puntVerlies');
+}
 
-// Daarna, na 3 seconden, wolkje6 tonen + redirect activeren
-setTimeout(() => {
-  const loseRedirect = document.getElementById('loseRedirect');
-  loseRedirect.style.display = 'block';
-  loseRedirect.style.opacity = 1;
-  paused = true;
-}, 3000);
-  }
+if (computerScore === 3) {
+  // Joop wint
+  const lossRedirect = document.getElementById('lossRedirect');
+  lossRedirect.style.display = 'block';
+  lossRedirect.style.opacity = 1;
+  lossRedirect.onclick = () => {
+    window.location.href = 'https://joopvanhetgroenewoud.nl';
+  };
+}
+function resetOverlays() {
+  const overlays = ['winRedirect', 'lossRedirect', /* alle andere wolkjes */];
+  overlays.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = 'none';
+      el.style.opacity = 0;
+    }
+  });
 }
   </script>
 </body>
