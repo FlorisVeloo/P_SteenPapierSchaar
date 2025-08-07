@@ -124,20 +124,15 @@ html {
       display: block !important;
       animation: fadeInOut 4.5s ease-in-out;
     }
-
-#winRedirect {
+/* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
+#winRedirect,
+#lossRedirect {
   display: none;
   opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-
-/* Alleen deze twee mogen wél aanklikbaar zijn */
-#winRedirect, #lossRedirect {
   pointer-events: auto;
   cursor: pointer;
+  transition: opacity 0.5s ease;
 }
-
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
