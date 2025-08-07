@@ -408,9 +408,7 @@ function play(userChoice) {
   document.getElementById('result').textContent = resultText;
   document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
 
-  // Redirects
 if (userScore === 3) {
-  // Speler wint
   const winRedirect = document.getElementById('winRedirect');
   winRedirect.style.display = 'block';
   winRedirect.style.opacity = 1;
@@ -420,7 +418,6 @@ if (userScore === 3) {
 }
 
 if (computerScore === 3) {
-  // Joop wint
   const lossRedirect = document.getElementById('lossRedirect');
   lossRedirect.style.display = 'block';
   lossRedirect.style.opacity = 1;
@@ -428,13 +425,20 @@ if (computerScore === 3) {
     window.location.href = 'https://joopvanhetgroenewoud.nl';
   };
 }
+  
 function resetOverlays() {
-  const overlays = ['winRedirect', 'lossRedirect'];
-  overlays.forEach(id => {
+  const ids = [
+    'wolkje1', 'wolkje2', 'wolkje3', 'wolkje4', 'wolkje5',
+    'wolkje6', 'wolkje7', 'wolkje_grrr', 'wolkje_2_uit_3',
+    'winRedirect', 'lossRedirect'
+  ];
+
+  ids.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.style.display = 'none';
       el.style.opacity = 0;
+      el.onclick = null; // voorkomt dat oude redirects blijven hangen
     }
   });
 }
