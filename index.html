@@ -373,11 +373,13 @@ html {
         const joopAchterMet2_0 = userScore === 2 && computerScore === 0;
         const joopAchterMet2_1 = userScore === 2 && computerScore === 1;
         
-        if (joopAchterMet2_0 || joopAchterMet2_1) {
-          showTempImage('continueGame');
-      }
-    }
-
+if (joopAchterMet2_0 || joopAchterMet2_1) {
+  paused = true;
+  showTempImage('continueGame');
+  setTimeout(() => {
+    paused = false;
+  }, 1500);
+}      
     function showTempImage(id) {
       const img = document.getElementById(id);
       img.style.display = 'block';
