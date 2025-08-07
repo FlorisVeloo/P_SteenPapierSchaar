@@ -118,6 +118,12 @@ html {
       animation: fadeInOut 4.5s ease-in-out;
     }
 
+#winRedirect {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
@@ -305,9 +311,9 @@ html {
   <div class="result" id="result">Maak je keuze!</div>
   <div class="score" id="score">Jij: 0 - Joop: 0</div>
 
-  <img id="loseRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect" onclick="location.href='https://www.joopvanhetgroenewoud.nl'" />
+  <img id="loseRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect" onclick="location.href='https://www.joopvanhetgroenewoud.nl'"/>
 
-  <img id="winRedirect" class="overlay-image" src="Wolkje7.png" onclick="location.href='https://onderweg4.joopvanhetgroenewoud.nl'"/>
+  <img id="winRedirect" class="overlay-image" src="Wolkje7.png"/>
   <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
   <img id="puntWinst" class="overlay-image" src="Wolkje3.png"/>
   <img id="puntVerlies" class="overlay-image" src="Wolkje4.png"/>
@@ -366,9 +372,11 @@ function play(userChoice) {
       setTimeout(() => {
         showTempImage('wolkje_2_uit_3');
       }, 1600);
-    } else if (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) {
-      // Alleen als speler van 1-0 naar 2-0 gaat
-      showTempImage('continueGame');
+else if (
+  (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) ||
+  (previousUserScore === 1 && previousComputerScore === 1 && userScore === 2)
+) {
+  showTempImage('continueGame');
     } else if (
       (previousUserScore === 0 && previousComputerScore === 1 && userScore === 1) ||
       (previousUserScore === 1 && previousComputerScore === 2 && userScore === 2)
@@ -390,11 +398,21 @@ function play(userChoice) {
 
   // Redirects
 if (userScore === 3) {
-  showTempImage('winRedirect');
-  setTimeout(() => {
-    window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
-  }, 4500); // Pas na fade-out
   paused = true;
+
+  // Toon winRedirect wolkje
+  const winRedirect = document.getElementById('winRedirect');
+  winRedirect.style.display = 'block';
+  winRedirect.style.opacity = 1;
+
+  // Voeg click-handler toe om door te sturen
+  winRedirect.onclick = () => {
+    window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
+  };
+
+  // Toon wolkje met fade-in animatie
+  showTempImage('winRedirect');
+  
   } else if (computerScore === 3) {
 // Eerst wolkje4 tonen
 showTempImage('puntVerlies');
