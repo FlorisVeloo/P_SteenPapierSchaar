@@ -314,7 +314,7 @@ html {
   </a>
 
   <img id="winRedirect" class="overlay-image" src="Wolkje7.png" onclick="location.href='https://onderweg4.joopvanhetgroenewoud.nl'">
-  <img id="continueGame" class="overlay-image" src="Wolkje5.png" onclick="continueGame()">
+  <img id="continueGame" class="overlay-image" src="Wolkje5.png"
   <img id="puntWinst" class="overlay-image" src="Wolkje3.png">
   <img id="puntVerlies" class="overlay-image" src="Wolkje4.png">
 
@@ -372,17 +372,10 @@ html {
       ) {
         const joopAchterMet2_0 = userScore === 2 && computerScore === 0;
         const joopAchterMet2_1 = userScore === 2 && computerScore === 1;
-
+        
         if (joopAchterMet2_0 || joopAchterMet2_1) {
-          paused = true;
-          document.getElementById('continueGame').style.display = 'block';
-        }
+          showTempImage('continueGame');
       }
-    }
-
-    function continueGame() {
-      document.getElementById('continueGame').style.display = 'none';
-      paused = false;
     }
 
     function showTempImage(id) {
