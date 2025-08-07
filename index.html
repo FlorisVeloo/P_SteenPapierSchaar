@@ -115,7 +115,7 @@ html {
 
     .fade-in-out {
       display: block !important;
-      animation: fadeInOut 1.5s ease-in-out;
+      animation: fadeInOut 4.5s ease-in-out;
     }
 
     /* Responsive achtergrond */
@@ -372,7 +372,8 @@ function play(userChoice) {
         showTempImage('wolkje_2_uit_3');
       }, 1600);
     } else if (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) {
-      showTempImage('continueGame'); // Wolkje5
+      // Alleen als speler van 1-0 naar 2-0 gaat
+      showTempImage('continueGame');
     } else if (
       (previousUserScore === 0 && previousComputerScore === 1 && userScore === 1) ||
       (previousUserScore === 1 && previousComputerScore === 2 && userScore === 2)
@@ -408,8 +409,7 @@ function showTempImage(id) {
 
   setTimeout(() => {
     img.classList.remove('fade-in-out');
-    img.style.opacity = 0;
-  }, 1500);
+  }, 4500); // Was 1500, nu gelijk aan animatie
 }
   </script>
 </body>
