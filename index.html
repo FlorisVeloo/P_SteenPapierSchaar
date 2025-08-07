@@ -329,8 +329,7 @@ html {
   <div class="result" id="result">Maak je keuze!</div>
   <div class="score" id="score">Jij: 0 - Joop: 0</div>
 
-  <img id="loseRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect" onclick="location.href='https://www.joopvanhetgroenewoud.nl'"/>
-
+  <img id="lossRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect"/>
   <img id="winRedirect" class="overlay-image" src="Wolkje7.png"/>
   <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
   <img id="puntWinst" class="overlay-image" src="Wolkje3.png"/>
@@ -435,7 +434,7 @@ if (computerScore === 3) {
   };
 }
 function resetOverlays() {
-  const overlays = ['winRedirect', 'lossRedirect', /* alle andere wolkjes */];
+  const overlays = ['winRedirect', 'lossRedirect'];
   overlays.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
