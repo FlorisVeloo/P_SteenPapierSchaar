@@ -106,6 +106,11 @@ html {
       pointer-events: none;
     }
 
+  #wolkje_versla {
+    pointer-events: none; /* Niet aanklikbaar */
+    cursor: default;      /* Cursor niet pointer */
+  }
+
     @keyframes fadeInOut {
       0% { opacity: 0; }
       10% { opacity: 1; }
@@ -300,7 +305,8 @@ html {
 </head>
 <body>
   <div id="background" style="background-image: url('Joop.png');"></div>
-  <img id="wolkjejoop" src="Wolkje_versla.png" alt="Decoratie" class="overlay-static"/>
+  <img id="wolkje_versla" src="Wolkje_versla.png" alt="Decoratie" class="overlay-static"/>
+
 
   <div class="choices">
     <img src="Water1.png" class="choice" onclick="play('steen')" alt="Water"/>
@@ -372,7 +378,7 @@ function play(userChoice) {
       setTimeout(() => {
         showTempImage('wolkje_2_uit_3');
       }, 1600);
-else if (
+    } else if (
   (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) ||
   (previousUserScore === 1 && previousComputerScore === 1 && userScore === 2)
 ) {
