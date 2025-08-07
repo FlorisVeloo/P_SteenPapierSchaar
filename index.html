@@ -394,14 +394,24 @@ function play(userChoice) {
   document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
 
   // Redirects
-  if (userScore === 3) {
-    document.getElementById('winRedirect').style.display = 'block';
-    paused = true;
+if (userScore === 3) {
+  showTempImage('winRedirect');
+  setTimeout(() => {
+    window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
+  }, 4500); // Pas na fade-out
+  paused = true;
   } else if (computerScore === 3) {
-    document.getElementById('loseRedirect').style.display = 'block';
-    paused = true;
+// Eerst wolkje4 tonen
+showTempImage('puntVerlies');
+
+// Daarna, na 3 seconden, wolkje6 tonen + redirect activeren
+setTimeout(() => {
+  const loseRedirect = document.getElementById('loseRedirect');
+  loseRedirect.style.display = 'block';
+  loseRedirect.style.opacity = 1;
+  paused = true;
+}, 3000);
   }
-}
 
 function showTempImage(id) {
   const img = document.getElementById(id);
