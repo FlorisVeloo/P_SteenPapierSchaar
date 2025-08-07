@@ -254,7 +254,7 @@ html {
     @media (min-width: 1025px) {
       :root {
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-32vh, -33vh, -38vh); /* - is omhoog, + naar beneden */
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
         --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
         --cloud-width: min(60vw, 450px);
@@ -263,7 +263,7 @@ html {
       
   body {
     justify-content: flex-end;
-    padding-bottom: 20px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+    padding-bottom: 30px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
   }
 
     .choice {
@@ -415,9 +415,6 @@ if (userScore === 3) {
   winRedirect.onclick = () => {
     window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
   };
-
-  // Toon wolkje met fade-in animatie
-  showTempImage('winRedirect');
   
   } else if (computerScore === 3) {
 // Eerst wolkje4 tonen
