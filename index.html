@@ -89,7 +89,7 @@ html {
       text-align: center;
       z-index: 1000;
       cursor: pointer;
-      display: none;
+      opacity: 0;
     }
 
     .overlay-static {
@@ -391,16 +391,15 @@ html {
       }
     }
 
-    function showTempImage(id) {
-      const img = document.getElementById(id);
-      img.classList.add('fade-in-out');
+function showTempImage(id) {
+  const img = document.getElementById(id);
+  img.classList.add('fade-in-out');
 
-      // Verwijder de klasse na de animatie om opnieuw te kunnen gebruiken
-      setTimeout(() => {
-        img.classList.remove('fade-in-out');
-        img.style.display = 'none';
-      }, 1500);
-    }
+  setTimeout(() => {
+    img.classList.remove('fade-in-out');
+    img.style.opacity = 0;
+  }, 1500);
+}
   </script>
 </body>
 </html>
