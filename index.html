@@ -330,6 +330,15 @@ html {
 
     const options = ['steen', 'papier', 'schaar'];
 
+function showTempImage(id) {
+  const img = document.getElementById(id);
+  img.classList.add('fade-in-out');
+
+  setTimeout(() => {
+    img.classList.remove('fade-in-out');
+  }, 4500); // Was 1500, nu gelijk aan animatie
+}
+    
 function play(userChoice) {
   if (paused) return;
 
@@ -398,14 +407,6 @@ setTimeout(() => {
   paused = true;
 }, 3000);
   }
-
-function showTempImage(id) {
-  const img = document.getElementById(id);
-  img.classList.add('fade-in-out');
-
-  setTimeout(() => {
-    img.classList.remove('fade-in-out');
-  }, 4500); // Was 1500, nu gelijk aan animatie
 }
   </script>
 </body>
