@@ -314,7 +314,6 @@ html {
   <div id="background" style="background-image: url('Joop.png');"></div>
   <img id="wolkje_versla" src="Wolkje_versla.png" alt="Decoratie" class="overlay-static"/>
 
-
   <div class="choices">
     <img src="Water1.png" class="choice" onclick="play('steen')" alt="Water"/>
     <img src="Plant1.png" class="choice" onclick="play('papier')" alt="Plant"/>
@@ -345,101 +344,134 @@ html {
     let userScore = 0;
     let computerScore = 0;
     let paused = false;
+    let gameEnded = false; // Nieuwe variabele om bij te houden of het spel is geëindigd
 
     const options = ['steen', 'papier', 'schaar'];
 
-function showTempImage(id) {
-  const img = document.getElementById(id);
-  img.classList.add('fade-in-out');
+    // Functie om het spel volledig te resetten
+    function resetGame() {
+      userScore = 0;
+      computerScore = 0;
+      paused = false;
+      gameEnded = false;
+      document.getElementById('result').textContent = 'Maak je keuze!';
+      document.getElementById('score').textContent = 'Jij: 0 - Joop: 0';
+      resetOverlays();
+    }
 
-  setTimeout(() => {
-    img.classList.remove('fade-in-out');
-  }, 4500); // Was 1500, nu gelijk aan animatie
-}
-    
-function play(userChoice) {
-  if (paused) return;
+    function showTempImage(id) {
+      const img = document.getElementById(id);
+      img.classList.add('fade-in-out');
 
-  const computerChoice = options[Math.floor(Math.random() * 3)];
-  let resultText = '';
-
-  const previousUserScore = userScore;
-  const previousComputerScore = computerScore;
-
-  if (userChoice === computerChoice) {
-    resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
-  } else if (
-    (userChoice === 'steen' && computerChoice === 'schaar') ||
-    (userChoice === 'papier' && computerChoice === 'steen') ||
-    (userChoice === 'schaar' && computerChoice === 'papier')
-  ) {
-    // Speler wint
-    userScore++;
-
-    resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
-
-    // 🔽 Wolkjeslogica voor speler die scoort
-    if (previousUserScore === 0 && previousComputerScore === 0 && userScore === 1) {
-      showTempImage('puntWinst');
       setTimeout(() => {
-        showTempImage('wolkje_2_uit_3');
-      }, 1600);
-    } else if (
-  (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) ||
-  (previousUserScore === 1 && previousComputerScore === 1 && userScore === 2)
-) {
-  showTempImage('continueGame');
-    } else if (
-      (previousUserScore === 0 && previousComputerScore === 1 && userScore === 1) ||
-      (previousUserScore === 1 && previousComputerScore === 2 && userScore === 2)
-    ) {
-      showTempImage('wolkje_grrr');
-    } else {
-      showTempImage('puntWinst');
+        img.classList.remove('fade-in-out');
+      }, 4500); // Was 1500, nu gelijk aan animatie
+    }
+    
+    function play(userChoice) {
+      // Als het spel al is geëindigd, blokkeer nieuwe moves
+      if (paused || gameEnded) return;
+
+      const computerChoice = options[Math.floor(Math.random() * 3)];
+      let resultText = '';
+
+      const previousUserScore = userScore;
+      const previousComputerScore = computerScore;
+
+      if (userChoice === computerChoice) {
+        resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
+      } else if (
+        (userChoice === 'steen' && computerChoice === 'schaar') ||
+        (userChoice === 'papier' && computerChoice === 'steen') ||
+        (userChoice === 'schaar' && computerChoice === 'papier')
+      ) {
+        // Speler wint
+        userScore++;
+        resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
+
+        // 🔽 Wolkjeslogica voor speler die scoort
+        if (previousUserScore === 0 && previousComputerScore === 0 && userScore === 1) {
+          showTempImage('puntWinst');
+          setTimeout(() => {
+            showTempImage('wolkje_2_uit_3');
+          }, 1600);
+        } else if (
+          (previousUserScore === 1 && previousComputerScore === 0 && userScore === 2) ||
+          (previousUserScore === 1 && previousComputerScore === 1 && userScore === 2)
+        ) {
+          showTempImage('continueGame');
+        } else if (
+          (previousUserScore === 0 && previousComputerScore === 1 && userScore === 1) ||
+          (previousUserScore === 1 && previousComputerScore === 2 && userScore === 2)
+        ) {
+          showTempImage('wolkje_grrr');
+        } else {
+          showTempImage('puntWinst');
+        }
+
+      } else {
+        // Joop wint
+        computerScore++;
+        resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
+        showTempImage('puntVerlies');
+      }
+
+      document.getElementById('result').textContent = resultText;
+      document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
+
+      // Check voor einde van het spel
+      if (userScore === 3) {
+        gameEnded = true; // Markeer spel als geëindigd
+        const winRedirect = document.getElementById('winRedirect');
+        winRedirect.style.display = 'block';
+        winRedirect.style.opacity = 1;
+        winRedirect.onclick = () => {
+          // Reset het spel voordat we naar de andere pagina gaan
+          resetGame();
+          window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
+        };
+      }
+
+      if (computerScore === 3) {
+        gameEnded = true; // Markeer spel als geëindigd
+        const lossRedirect = document.getElementById('lossRedirect');
+        lossRedirect.style.display = 'block';
+        lossRedirect.style.opacity = 1;
+        lossRedirect.onclick = () => {
+          // Reset het spel voordat we naar de andere pagina gaan
+          resetGame();
+          window.location.href = 'https://joopvanhetgroenewoud.nl';
+        };
+      }
     }
 
-  } else {
-    // Joop wint
-    computerScore++;
-    resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
-    showTempImage('puntVerlies');
-  }
+    function resetOverlays() {
+      const ids = [
+        'continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla', 'winRedirect', 'lossRedirect'
+      ];
 
-  document.getElementById('result').textContent = resultText;
-  document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
-
-if (userScore === 3) {
-  const winRedirect = document.getElementById('winRedirect');
-  winRedirect.style.display = 'block';
-  winRedirect.style.opacity = 1;
-  winRedirect.onclick = () => {
-    window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
-  };
-}
-
-if (computerScore === 3) {
-  const lossRedirect = document.getElementById('lossRedirect');
-  lossRedirect.style.display = 'block';
-  lossRedirect.style.opacity = 1;
-  lossRedirect.onclick = () => {
-    window.location.href = 'https://joopvanhetgroenewoud.nl';
-  };
-}
-  
-function resetOverlays() {
-  const ids = [
-    'continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla', 'winRedirect', 'lossRedirect'
-  ];
-}
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.display = 'none';
-      el.style.opacity = 0;
-      el.onclick = null; // voorkomt dat oude redirects blijven hangen
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.display = 'none';
+          el.style.opacity = 0;
+          el.onclick = null; // voorkomt dat oude redirects blijven hangen
+        }
+      });
     }
-  });
-}
+
+    // Reset het spel wanneer de pagina wordt geladen (voor als iemand terugkomt via browser terug knop)
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // Pagina werd geladen uit cache (terug knop gebruikt)
+        resetGame();
+      }
+    });
+
+    // Extra veiligheid: reset bij page load
+    window.addEventListener('load', function() {
+      resetGame();
+    });
   </script>
 </body>
 </html>
