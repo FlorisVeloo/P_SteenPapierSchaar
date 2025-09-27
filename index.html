@@ -518,10 +518,8 @@ html {
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
         
-        // Maak het wolkje een link voor URL preview
-        winRedirect.style.cursor = 'pointer';
-        winRedirect.setAttribute('data-href', 'https://onderweg4.joopvanhetgroenewoud.nl');
-        winRedirect.title = 'Ga naar: https://onderweg4.joopvanhetgroenewoud.nl';
+        // Setup URL preview alleen wanneer wolkje zichtbaar wordt
+        setupUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
         
         winRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
@@ -536,10 +534,8 @@ html {
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
         
-        // Maak het wolkje een link voor URL preview
-        lossRedirect.style.cursor = 'pointer';
-        lossRedirect.setAttribute('data-href', 'https://joopvanhetgroenewoud.nl');
-        lossRedirect.title = 'Ga naar: https://joopvanhetgroenewoud.nl';
+        // Setup URL preview alleen wanneer wolkje zichtbaar wordt
+        setupUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
         
         lossRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
