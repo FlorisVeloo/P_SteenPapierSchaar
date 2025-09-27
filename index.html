@@ -517,6 +517,7 @@ html {
         const winRedirect = document.getElementById('winRedirect');
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
+        winRedirect.style.pointerEvents = 'auto';
         winRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
@@ -529,6 +530,7 @@ html {
         const lossRedirect = document.getElementById('lossRedirect');
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
+        lossRedirect.style.pointerEvents = 'auto';
         lossRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
