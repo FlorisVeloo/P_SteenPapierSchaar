@@ -517,10 +517,6 @@ html {
         const winRedirect = document.getElementById('winRedirect');
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
-        
-        // Setup URL preview alleen wanneer wolkje zichtbaar wordt
-        setupUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
-        
         winRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
@@ -533,10 +529,6 @@ html {
         const lossRedirect = document.getElementById('lossRedirect');
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
-        
-        // Setup URL preview alleen wanneer wolkje zichtbaar wordt
-        setupUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
-        
         lossRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
@@ -560,45 +552,9 @@ html {
       });
     }
 
-    // Functie om URL preview te simuleren
-    function createUrlPreview(element, url) {
-      let previewDiv = null;
-      
-      element.addEventListener('mouseenter', () => {
-        // Maak preview div
-        previewDiv = document.createElement('div');
-        previewDiv.textContent = url;
-        previewDiv.style.cssText = `
-          position: fixed;
-          bottom: 10px;
-          left: 10px;
-          background: rgba(0, 0, 0, 0.8);
-          color: white;
-          padding: 5px 10px;
-          border-radius: 3px;
-          font-size: 12px;
-          z-index: 10000;
-          pointer-events: none;
-          font-family: Arial, sans-serif;
-        `;
-        document.body.appendChild(previewDiv);
-      });
-      
-      element.addEventListener('mouseleave', () => {
-        if (previewDiv) {
-          document.body.removeChild(previewDiv);
-          previewDiv = null;
-        }
-      });
-    }
-
     // Touch support voor winRedirect en lossRedirect wolkjes (zoals in de eerste HTML)
     const winRedirect = document.getElementById('winRedirect');
     const lossRedirect = document.getElementById('lossRedirect');
-    
-    // Setup URL preview voor beide wolkjes
-    createUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
-    createUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
     
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
       // Touch events voor winRedirect
