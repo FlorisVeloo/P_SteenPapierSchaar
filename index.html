@@ -415,12 +415,8 @@ html {
   <div class="result" id="result">Maak je keuze!</div>
   <div class="score" id="score">Jij: 0 - Joop: 0</div>
 
-  <a id="lossRedirectLink" href="https://joopvanhetgroenewoud.nl" style="display: none;">
-    <img id="lossRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect"/>
-  </a>
-  <a id="winRedirectLink" href="https://onderweg4.joopvanhetgroenewoud.nl" style="display: none;">
-    <img id="winRedirect" class="overlay-image" src="Wolkje7.png"/>
-  </a>
+  <img id="lossRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect"/>
+  <img id="winRedirect" class="overlay-image" src="Wolkje7.png"/>
   <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
   <img id="puntWinst" class="overlay-image" src="Wolkje3.png"/>
   <img id="puntVerlies" class="overlay-image" src="Wolkje4.png"/>
@@ -518,67 +514,116 @@ html {
       // Check voor einde van het spel
       if (userScore === 3) {
         gameEnded = true; // Markeer spel als geëindigd
-        const winRedirectLink = document.getElementById('winRedirectLink');
-        winRedirectLink.style.display = 'block';
-        winRedirectLink.style.opacity = '1';
-        winRedirectLink.style.pointerEvents = 'auto';
+        const winRedirect = document.getElementById('winRedirect');
+        winRedirect.style.display = 'block';
+        winRedirect.style.opacity = 1;
+        
+        // Maak het wolkje een link voor URL preview
+        winRedirect.style.cursor = 'pointer';
+        winRedirect.setAttribute('data-href', 'https://onderweg4.joopvanhetgroenewoud.nl');
+        winRedirect.title = 'Ga naar: https://onderweg4.joopvanhetgroenewoud.nl';
+        
+        winRedirect.onclick = () => {
+          // Reset het spel voordat we naar de andere pagina gaan
+          resetGame();
+          window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
+        };
       }
 
       if (computerScore === 3) {
         gameEnded = true; // Markeer spel als geëindigd
-        const lossRedirectLink = document.getElementById('lossRedirectLink');
-        lossRedirectLink.style.display = 'block';
-        lossRedirectLink.style.opacity = '1';
-        lossRedirectLink.style.pointerEvents = 'auto';
+        const lossRedirect = document.getElementById('lossRedirect');
+        lossRedirect.style.display = 'block';
+        lossRedirect.style.opacity = 1;
+        
+        // Maak het wolkje een link voor URL preview
+        lossRedirect.style.cursor = 'pointer';
+        lossRedirect.setAttribute('data-href', 'https://joopvanhetgroenewoud.nl');
+        lossRedirect.title = 'Ga naar: https://joopvanhetgroenewoud.nl';
+        
+        lossRedirect.onclick = () => {
+          // Reset het spel voordat we naar de andere pagina gaan
+          resetGame();
+          window.location.href = 'https://joopvanhetgroenewoud.nl';
+        };
       }
     }
 
     function resetOverlays() {
-      const linkIds = ['winRedirectLink', 'lossRedirectLink'];
-      const imgIds = ['continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla'];
+      const ids = [
+        'continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla', 'winRedirect', 'lossRedirect'
+      ];
 
-      linkIds.forEach(id => {
+      ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.style.display = 'none';
           el.style.opacity = 0;
-          el.style.pointerEvents = 'none';
+          el.onclick = null; // voorkomt dat oude redirects blijven hangen
         }
       });
+    }
 
-      imgIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.style.display = 'none';
-          el.style.opacity = 0;
+    // Functie om URL preview te simuleren
+    function createUrlPreview(element, url) {
+      let previewDiv = null;
+      
+      element.addEventListener('mouseenter', () => {
+        // Maak preview div
+        previewDiv = document.createElement('div');
+        previewDiv.textContent = url;
+        previewDiv.style.cssText = `
+          position: fixed;
+          bottom: 10px;
+          left: 10px;
+          background: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 3px;
+          font-size: 12px;
+          z-index: 10000;
+          pointer-events: none;
+          font-family: Arial, sans-serif;
+        `;
+        document.body.appendChild(previewDiv);
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        if (previewDiv) {
+          document.body.removeChild(previewDiv);
+          previewDiv = null;
         }
       });
     }
 
     // Touch support voor winRedirect en lossRedirect wolkjes (zoals in de eerste HTML)
-    const winRedirectLink = document.getElementById('winRedirectLink');
-    const lossRedirectLink = document.getElementById('lossRedirectLink');
+    const winRedirect = document.getElementById('winRedirect');
+    const lossRedirect = document.getElementById('lossRedirect');
+    
+    // Setup URL preview voor beide wolkjes
+    createUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
+    createUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
     
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
-      // Touch events voor winRedirectLink
-      winRedirectLink.addEventListener("touchstart", () => {
-        winRedirectLink.classList.add("touched");
+      // Touch events voor winRedirect
+      winRedirect.addEventListener("touchstart", () => {
+        winRedirect.classList.add("touched");
       });
 
-      winRedirectLink.addEventListener("touchend", () => {
+      winRedirect.addEventListener("touchend", () => {
         setTimeout(() => {
-          winRedirectLink.classList.remove("touched");
+          winRedirect.classList.remove("touched");
         }, 300);
       });
 
-      // Touch events voor lossRedirectLink
-      lossRedirectLink.addEventListener("touchstart", () => {
-        lossRedirectLink.classList.add("touched");
+      // Touch events voor lossRedirect
+      lossRedirect.addEventListener("touchstart", () => {
+        lossRedirect.classList.add("touched");
       });
 
-      lossRedirectLink.addEventListener("touchend", () => {
+      lossRedirect.addEventListener("touchend", () => {
         setTimeout(() => {
-          lossRedirectLink.classList.remove("touched");
+          lossRedirect.classList.remove("touched");
         }, 300);
       });
     }
