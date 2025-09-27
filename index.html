@@ -30,8 +30,8 @@
 html {
   height: 100%;
   margin: 0;
-  overflow-y: hidden; /*deze aanpassen voor scroll, naar overflow:none of auto*/
-  overscroll-behavior: none; /*deze aanpassen voor scroll, naar none*/
+  overflow-y: auto; /*deze aanpassen voor scroll, naar overflow:none of auto*/
+  overscroll-behavior: auto; /*deze aanpassen voor scroll, naar none*/
   position: static;
   width: 100%;
 }
@@ -137,89 +137,31 @@ html {
     }
 
 /* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
-#winRedirectLink,
-#lossRedirectLink {
+#winRedirect,
+#lossRedirect {
   display: none;
   opacity: 0;
-  pointer-events: none;
-}
-
-/* Hover effect voor winRedirect link en wolkje (wolkje7.png) */
-#winRedirectLink {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  );
-  width: var(--cloud-width);
-  text-align: center;
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
+  pointer-events: auto;
   cursor: pointer;
   transition: transform 0.3s ease-in-out, opacity 0.5s ease;
-  text-decoration: none;
 }
 
-#winRedirectLink:hover {
+/* Hover effect voor de eind-wolkjes (zoals in de eerste HTML) */
+#winRedirect:hover,
+#lossRedirect:hover {
   transform: translate(
     calc(-50% + var(--title-x-shift)),
     calc(-50% + var(--title-y-shift))
   ) scale(1.1) translateY(-7%);
 }
 
-#winRedirectLink.touched {
+/* Touch effect voor de eind-wolkjes */
+#winRedirect.touched,
+#lossRedirect.touched {
   transform: translate(
     calc(-50% + var(--title-x-shift)),
     calc(-50% + var(--title-y-shift))
   ) scale(1.1) translateY(-7%) !important;
-}
-
-#winRedirect {
-  width: 100%;
-  height: auto;
-  border: none;
-}
-
-/* Hover effect voor lossRedirect link en wolkje (wolkje6.png) */
-#lossRedirectLink {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  );
-  width: var(--cloud-width);
-  text-align: center;
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
-  text-decoration: none;
-}
-
-#lossRedirectLink:hover {
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  ) scale(1.1) translateY(-7%);
-}
-
-#lossRedirectLink.touched {
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  ) scale(1.1) translateY(-7%) !important;
-}
-
-#lossRedirect {
-  width: 100%;
-  height: auto;
-  border: none;
 }
 
     /* Responsive achtergrond */
@@ -552,45 +494,7 @@ html {
       });
     }
 
-    // Functie om URL preview toe te voegen
-    function addUrlPreview(element, url) {
-      let previewDiv = null;
-      
-      element.addEventListener('mouseenter', () => {
-        if (previewDiv) return; // Voorkom duplicaten
-        
-        previewDiv = document.createElement('div');
-        previewDiv.textContent = url;
-        previewDiv.style.cssText = `
-          position: fixed;
-          bottom: 10px;
-          left: 10px;
-          background: rgba(0, 0, 0, 0.8);
-          color: white;
-          padding: 5px 10px;
-          border-radius: 3px;
-          font-size: 12px;
-          z-index: 10001;
-          pointer-events: none;
-          font-family: Arial, sans-serif;
-          white-space: nowrap;
-        `;
-        document.body.appendChild(previewDiv);
-      });
-      
-      element.addEventListener('mouseleave', () => {
-        if (previewDiv) {
-          try {
-            document.body.removeChild(previewDiv);
-          } catch(e) {
-            // Preview div was al verwijderd
-          }
-          previewDiv = null;
-        }
-      });
-    }
-
-    // Touch support voor winRedirect en lossRedirect wolkjes (zoals in de eerste HTML)
+    // Touch support voor de eind-wolkjes
     const winRedirect = document.getElementById('winRedirect');
     const lossRedirect = document.getElementById('lossRedirect');
     
