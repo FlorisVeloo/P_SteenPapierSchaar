@@ -137,8 +137,8 @@ html {
     }
 
 /* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
-#winRedirect,
-#lossRedirect {
+#winRedirectLink,
+#lossRedirectLink {
   display: none;
   opacity: 0;
   pointer-events: auto;
@@ -146,44 +146,82 @@ html {
   transition: opacity 0.5s ease;
 }
 
-/* Hover effect voor winRedirect wolkje (wolkje7.png) */
+/* Hover effect voor winRedirect link en wolkje (wolkje7.png) */
+#winRedirectLink {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  );
+  width: var(--cloud-width);
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+  text-decoration: none;
+}
+
+#winRedirectLink:hover {
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  ) scale(1.1) translateY(-7%);
+}
+
+#winRedirectLink.touched {
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  ) scale(1.1) translateY(-7%) !important;
+}
+
 #winRedirect {
-  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+  width: 100%;
+  height: auto;
+  border: none;
 }
 
-#winRedirect:hover {
+/* Hover effect voor lossRedirect link en wolkje (wolkje6.png) */
+#lossRedirectLink {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  );
+  width: var(--cloud-width);
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+  text-decoration: none;
+}
+
+#lossRedirectLink:hover {
   transform: translate(
     calc(-50% + var(--title-x-shift)),
     calc(-50% + var(--title-y-shift))
   ) scale(1.1) translateY(-7%);
 }
 
-/* Touch effect voor winRedirect wolkje */
-#winRedirect.touched {
+#lossRedirectLink.touched {
   transform: translate(
     calc(-50% + var(--title-x-shift)),
     calc(-50% + var(--title-y-shift))
   ) scale(1.1) translateY(-7%) !important;
 }
 
-/* Hover effect voor lossRedirect wolkje (wolkje6.png) */
 #lossRedirect {
-  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
-}
-
-#lossRedirect:hover {
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  ) scale(1.1) translateY(-7%);
-}
-
-/* Touch effect voor lossRedirect wolkje */
-#lossRedirect.touched {
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  ) scale(1.1) translateY(-7%) !important;
+  width: 100%;
+  height: auto;
+  border: none;
 }
 
     /* Responsive achtergrond */
@@ -379,8 +417,12 @@ html {
   <div class="result" id="result">Maak je keuze!</div>
   <div class="score" id="score">Jij: 0 - Joop: 0</div>
 
-  <img id="lossRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect"/>
-  <img id="winRedirect" class="overlay-image" src="Wolkje7.png"/>
+  <a id="lossRedirectLink" href="https://joopvanhetgroenewoud.nl" style="display: none;">
+    <img id="lossRedirect" class="overlay-image" src="Wolkje6.png" alt="Joop redirect"/>
+  </a>
+  <a id="winRedirectLink" href="https://onderweg4.joopvanhetgroenewoud.nl" style="display: none;">
+    <img id="winRedirect" class="overlay-image" src="Wolkje7.png"/>
+  </a>
   <img id="continueGame" class="overlay-image" src="Wolkje5.png"/>
   <img id="puntWinst" class="overlay-image" src="Wolkje3.png"/>
   <img id="puntVerlies" class="overlay-image" src="Wolkje4.png"/>
@@ -478,48 +520,49 @@ html {
       // Check voor einde van het spel
       if (userScore === 3) {
         gameEnded = true; // Markeer spel als geëindigd
-        const winRedirect = document.getElementById('winRedirect');
-        winRedirect.style.display = 'block';
-        winRedirect.style.opacity = 1;
-        winRedirect.onclick = () => {
-          // Reset het spel voordat we naar de andere pagina gaan
-          resetGame();
-          window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
-        };
+        const winRedirectLink = document.getElementById('winRedirectLink');
+        winRedirectLink.style.display = 'block';
+        winRedirectLink.style.opacity = 1;
+        winRedirectLink.style.pointerEvents = 'auto';
       }
 
       if (computerScore === 3) {
         gameEnded = true; // Markeer spel als geëindigd
-        const lossRedirect = document.getElementById('lossRedirect');
-        lossRedirect.style.display = 'block';
-        lossRedirect.style.opacity = 1;
-        lossRedirect.onclick = () => {
-          // Reset het spel voordat we naar de andere pagina gaan
-          resetGame();
-          window.location.href = 'https://joopvanhetgroenewoud.nl';
-        };
+        const lossRedirectLink = document.getElementById('lossRedirectLink');
+        lossRedirectLink.style.display = 'block';
+        lossRedirectLink.style.opacity = 1;
+        lossRedirectLink.style.pointerEvents = 'auto';
       }
     }
 
     function resetOverlays() {
-      const ids = [
-        'continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla', 'winRedirect', 'lossRedirect'
-      ];
+      const linkIds = ['winRedirectLink', 'lossRedirectLink'];
+      const imgIds = ['continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla'];
 
-      ids.forEach(id => {
+      linkIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.style.display = 'none';
           el.style.opacity = 0;
-          el.onclick = null; // voorkomt dat oude redirects blijven hangen
+          el.style.pointerEvents = 'none';
+        }
+      });
+
+      imgIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.display = 'none';
+          el.style.opacity = 0;
         }
       });
     }
 
-    // Touch support voor winRedirect wolkje (zoals in de eerste HTML)
+    // Touch support voor winRedirect en lossRedirect wolkjes (zoals in de eerste HTML)
     const winRedirect = document.getElementById('winRedirect');
+    const lossRedirect = document.getElementById('lossRedirect');
     
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+      // Touch events voor winRedirect
       winRedirect.addEventListener("touchstart", () => {
         winRedirect.classList.add("touched");
       });
@@ -527,6 +570,17 @@ html {
       winRedirect.addEventListener("touchend", () => {
         setTimeout(() => {
           winRedirect.classList.remove("touched");
+        }, 300);
+      });
+
+      // Touch events voor lossRedirect
+      lossRedirect.addEventListener("touchstart", () => {
+        lossRedirect.classList.add("touched");
+      });
+
+      lossRedirect.addEventListener("touchend", () => {
+        setTimeout(() => {
+          lossRedirect.classList.remove("touched");
         }, 300);
       });
     }
