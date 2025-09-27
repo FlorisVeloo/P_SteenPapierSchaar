@@ -166,6 +166,26 @@ html {
   ) scale(1.1) translateY(-7%) !important;
 }
 
+/* Hover effect voor lossRedirect wolkje (wolkje6.png) */
+#lossRedirect {
+  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+}
+
+#lossRedirect:hover {
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  ) scale(1.1) translateY(-7%);
+}
+
+/* Touch effect voor lossRedirect wolkje */
+#lossRedirect.touched {
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  ) scale(1.1) translateY(-7%) !important;
+}
+
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
