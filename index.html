@@ -460,14 +460,22 @@ html {
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
         
-        // Voeg URL preview toe voor dit wolkje
-        addUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
+        // Debug: eerst zonder URL preview testen
+        console.log('Win wolkje wordt zichtbaar');
         
-        winRedirect.onclick = () => {
+        winRedirect.onclick = function(e) {
+          console.log('Win wolkje geklikt!');
+          e.preventDefault();
+          e.stopPropagation();
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
           window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
         };
+        
+        // Voeg URL preview toe voor dit wolkje (na een korte delay)
+        setTimeout(() => {
+          addUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
+        }, 100);
       }
 
       if (computerScore === 3) {
@@ -476,14 +484,22 @@ html {
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
         
-        // Voeg URL preview toe voor dit wolkje
-        addUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
+        // Debug: eerst zonder URL preview testen
+        console.log('Loss wolkje wordt zichtbaar');
         
-        lossRedirect.onclick = () => {
+        lossRedirect.onclick = function(e) {
+          console.log('Loss wolkje geklikt!');
+          e.preventDefault();
+          e.stopPropagation();
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
           window.location.href = 'https://joopvanhetgroenewoud.nl';
         };
+        
+        // Voeg URL preview toe voor dit wolkje (na een korte delay)
+        setTimeout(() => {
+          addUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
+        }, 100);
       }
     }
 
@@ -500,6 +516,48 @@ html {
           el.onclick = null; // voorkomt dat oude redirects blijven hangen
         }
       });
+    }
+
+    // Eenvoudige URL preview functie
+    function addUrlPreview(element, url) {
+      let previewDiv = null;
+      
+      const showPreview = function() {
+        if (previewDiv) return; // Voorkom duplicaten
+        
+        previewDiv = document.createElement('div');
+        previewDiv.textContent = url;
+        previewDiv.style.cssText = `
+          position: fixed;
+          bottom: 10px;
+          left: 10px;
+          background: rgba(0, 0, 0, 0.9);
+          color: white;
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          z-index: 10001;
+          pointer-events: none;
+          font-family: Arial, sans-serif;
+          white-space: nowrap;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        `;
+        document.body.appendChild(previewDiv);
+      };
+      
+      const hidePreview = function() {
+        if (previewDiv && previewDiv.parentNode) {
+          document.body.removeChild(previewDiv);
+          previewDiv = null;
+        }
+      };
+      
+      // Voeg event listeners toe
+      element.addEventListener('mouseenter', showPreview);
+      element.addEventListener('mouseleave', hidePreview);
+      
+      // Extra cleanup voor als element wordt verwijderd
+      element.addEventListener('click', hidePreview);
     }
 
     // Touch support voor de eind-wolkjes
