@@ -135,6 +135,7 @@ html {
       display: block !important;
       animation: fadeInOut 4.5s ease-in-out;
     }
+
 /* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
 #winRedirect,
 #lossRedirect {
@@ -144,6 +145,27 @@ html {
   cursor: pointer;
   transition: opacity 0.5s ease;
 }
+
+/* Hover effect voor winRedirect wolkje (wolkje7.png) */
+#winRedirect {
+  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+}
+
+#winRedirect:hover {
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  ) scale(1.1) translateY(-7%);
+}
+
+/* Touch effect voor winRedirect wolkje */
+#winRedirect.touched {
+  transform: translate(
+    calc(-50% + var(--title-x-shift)),
+    calc(-50% + var(--title-y-shift))
+  ) scale(1.1) translateY(-7%) !important;
+}
+
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
@@ -471,6 +493,21 @@ html {
           el.style.opacity = 0;
           el.onclick = null; // voorkomt dat oude redirects blijven hangen
         }
+      });
+    }
+
+    // Touch support voor winRedirect wolkje (zoals in de eerste HTML)
+    const winRedirect = document.getElementById('winRedirect');
+    
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+      winRedirect.addEventListener("touchstart", () => {
+        winRedirect.classList.add("touched");
+      });
+
+      winRedirect.addEventListener("touchend", () => {
+        setTimeout(() => {
+          winRedirect.classList.remove("touched");
+        }, 300);
       });
     }
 
