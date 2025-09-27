@@ -141,9 +141,7 @@ html {
 #lossRedirectLink {
   display: none;
   opacity: 0;
-  pointer-events: auto;
-  cursor: pointer;
-  transition: opacity 0.5s ease;
+  pointer-events: none;
 }
 
 /* Hover effect voor winRedirect link en wolkje (wolkje7.png) */
@@ -255,64 +253,12 @@ html {
         background-size: cover;
         background-position: center center;
       }
-
-      /* Aanpassing voor eind-wolkjes op landscape mobiel */
-      #winRedirectLink,
-      #lossRedirectLink {
-        transform: translate(
-          calc(-50% + clamp(5vw, 15vw, 20vw)),
-          calc(-50% + clamp(-20vh, -15vh, -10vh))
-        );
-        width: clamp(25vw, 30vw, 40vw);
-      }
-
-      #winRedirectLink:hover,
-      #lossRedirectLink:hover {
-        transform: translate(
-          calc(-50% + clamp(5vw, 15vw, 20vw)),
-          calc(-50% + clamp(-20vh, -15vh, -10vh))
-        ) scale(1.1) translateY(-7%);
-      }
-
-      #winRedirectLink.touched,
-      #lossRedirectLink.touched {
-        transform: translate(
-          calc(-50% + clamp(5vw, 15vw, 20vw)),
-          calc(-50% + clamp(-20vh, -15vh, -10vh))
-        ) scale(1.1) translateY(-7%) !important;
-      }
     }
 
     @media (orientation: portrait) {
       #background {
         background-size: cover;
         background-position: 57% center;
-      }
-
-      /* Aanpassing voor eind-wolkjes op portrait mobiel */
-      #winRedirectLink,
-      #lossRedirectLink {
-        transform: translate(
-          calc(-50% + clamp(0vw, 10vw, 15vw)),
-          calc(-50% + clamp(-15vh, -10vh, -5vh))
-        );
-        width: clamp(40vw, 50vw, 60vw);
-      }
-
-      #winRedirectLink:hover,
-      #lossRedirectLink:hover {
-        transform: translate(
-          calc(-50% + clamp(0vw, 10vw, 15vw)),
-          calc(-50% + clamp(-15vh, -10vh, -5vh))
-        ) scale(1.1) translateY(-7%);
-      }
-
-      #winRedirectLink.touched,
-      #lossRedirectLink.touched {
-        transform: translate(
-          calc(-50% + clamp(0vw, 10vw, 15vw)),
-          calc(-50% + clamp(-15vh, -10vh, -5vh))
-        ) scale(1.1) translateY(-7%) !important;
       }
     }
     /* ========== SMALL DEVICES (max 320px) ========== */
@@ -343,32 +289,6 @@ html {
     margin-top: 20px;
     font-size: 28px;
   }
-
-      /* Speciale aanpassing voor eind-wolkjes op zeer kleine schermen */
-      #winRedirectLink,
-      #lossRedirectLink {
-        transform: translate(
-          calc(-50% + 0vw),
-          calc(-50% + clamp(-5vh, 0vh, 5vh))
-        );
-        width: clamp(50vw, 60vw, 70vw);
-      }
-
-      #winRedirectLink:hover,
-      #lossRedirectLink:hover {
-        transform: translate(
-          calc(-50% + 0vw),
-          calc(-50% + clamp(-5vh, 0vh, 5vh))
-        ) scale(1.1) translateY(-7%);
-      }
-
-      #winRedirectLink.touched,
-      #lossRedirectLink.touched {
-        transform: translate(
-          calc(-50% + 0vw),
-          calc(-50% + clamp(-5vh, 0vh, 5vh))
-        ) scale(1.1) translateY(-7%) !important;
-      }
     }
 
     @media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
@@ -397,32 +317,6 @@ html {
   .score {
     font-size: 28px;
   }
-
-      /* Aanpassing voor eind-wolkjes op tablet landscape */
-      #winRedirectLink,
-      #lossRedirectLink {
-        transform: translate(
-          calc(-50% + clamp(10vw, 15vw, 20vw)),
-          calc(-50% + clamp(-25vh, -20vh, -15vh))
-        );
-        width: clamp(20vw, 25vw, 35vw);
-      }
-
-      #winRedirectLink:hover,
-      #lossRedirectLink:hover {
-        transform: translate(
-          calc(-50% + clamp(10vw, 15vw, 20vw)),
-          calc(-50% + clamp(-25vh, -20vh, -15vh))
-        ) scale(1.1) translateY(-7%);
-      }
-
-      #winRedirectLink.touched,
-      #lossRedirectLink.touched {
-        transform: translate(
-          calc(-50% + clamp(10vw, 15vw, 20vw)),
-          calc(-50% + clamp(-25vh, -20vh, -15vh))
-        ) scale(1.1) translateY(-7%) !important;
-      }
     }
 
     @media (min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape) {
@@ -626,7 +520,7 @@ html {
         gameEnded = true; // Markeer spel als geëindigd
         const winRedirectLink = document.getElementById('winRedirectLink');
         winRedirectLink.style.display = 'block';
-        winRedirectLink.style.opacity = 1;
+        winRedirectLink.style.opacity = '1';
         winRedirectLink.style.pointerEvents = 'auto';
       }
 
@@ -634,7 +528,7 @@ html {
         gameEnded = true; // Markeer spel als geëindigd
         const lossRedirectLink = document.getElementById('lossRedirectLink');
         lossRedirectLink.style.display = 'block';
-        lossRedirectLink.style.opacity = 1;
+        lossRedirectLink.style.opacity = '1';
         lossRedirectLink.style.pointerEvents = 'auto';
       }
     }
