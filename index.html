@@ -30,8 +30,8 @@
 html {
   height: 100%;
   margin: 0;
-  overflow-y: auto; /*deze aanpassen voor scroll, naar overflow:none of auto*/
-  overscroll-behavior: auto; /*deze aanpassen voor scroll, naar none*/
+  overflow-y: hidden; /*deze aanpassen voor scroll, naar overflow:none of auto*/
+  overscroll-behavior: none; /*deze aanpassen voor scroll, naar none*/
   position: static;
   width: 100%;
 }
@@ -517,11 +517,6 @@ html {
         const winRedirect = document.getElementById('winRedirect');
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
-        winRedirect.style.pointerEvents = 'auto';
-        
-        // Voeg URL preview toe
-        addUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
-        
         winRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
@@ -534,11 +529,6 @@ html {
         const lossRedirect = document.getElementById('lossRedirect');
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
-        lossRedirect.style.pointerEvents = 'auto';
-        
-        // Voeg URL preview toe
-        addUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
-        
         lossRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
