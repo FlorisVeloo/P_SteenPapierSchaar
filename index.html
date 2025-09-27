@@ -255,12 +255,64 @@ html {
         background-size: cover;
         background-position: center center;
       }
+
+      /* Aanpassing voor eind-wolkjes op landscape mobiel */
+      #winRedirectLink,
+      #lossRedirectLink {
+        transform: translate(
+          calc(-50% + clamp(5vw, 15vw, 20vw)),
+          calc(-50% + clamp(-20vh, -15vh, -10vh))
+        );
+        width: clamp(25vw, 30vw, 40vw);
+      }
+
+      #winRedirectLink:hover,
+      #lossRedirectLink:hover {
+        transform: translate(
+          calc(-50% + clamp(5vw, 15vw, 20vw)),
+          calc(-50% + clamp(-20vh, -15vh, -10vh))
+        ) scale(1.1) translateY(-7%);
+      }
+
+      #winRedirectLink.touched,
+      #lossRedirectLink.touched {
+        transform: translate(
+          calc(-50% + clamp(5vw, 15vw, 20vw)),
+          calc(-50% + clamp(-20vh, -15vh, -10vh))
+        ) scale(1.1) translateY(-7%) !important;
+      }
     }
 
     @media (orientation: portrait) {
       #background {
         background-size: cover;
         background-position: 57% center;
+      }
+
+      /* Aanpassing voor eind-wolkjes op portrait mobiel */
+      #winRedirectLink,
+      #lossRedirectLink {
+        transform: translate(
+          calc(-50% + clamp(0vw, 10vw, 15vw)),
+          calc(-50% + clamp(-15vh, -10vh, -5vh))
+        );
+        width: clamp(40vw, 50vw, 60vw);
+      }
+
+      #winRedirectLink:hover,
+      #lossRedirectLink:hover {
+        transform: translate(
+          calc(-50% + clamp(0vw, 10vw, 15vw)),
+          calc(-50% + clamp(-15vh, -10vh, -5vh))
+        ) scale(1.1) translateY(-7%);
+      }
+
+      #winRedirectLink.touched,
+      #lossRedirectLink.touched {
+        transform: translate(
+          calc(-50% + clamp(0vw, 10vw, 15vw)),
+          calc(-50% + clamp(-15vh, -10vh, -5vh))
+        ) scale(1.1) translateY(-7%) !important;
       }
     }
     /* ========== SMALL DEVICES (max 320px) ========== */
@@ -291,6 +343,32 @@ html {
     margin-top: 20px;
     font-size: 28px;
   }
+
+      /* Speciale aanpassing voor eind-wolkjes op zeer kleine schermen */
+      #winRedirectLink,
+      #lossRedirectLink {
+        transform: translate(
+          calc(-50% + 0vw),
+          calc(-50% + clamp(-5vh, 0vh, 5vh))
+        );
+        width: clamp(50vw, 60vw, 70vw);
+      }
+
+      #winRedirectLink:hover,
+      #lossRedirectLink:hover {
+        transform: translate(
+          calc(-50% + 0vw),
+          calc(-50% + clamp(-5vh, 0vh, 5vh))
+        ) scale(1.1) translateY(-7%);
+      }
+
+      #winRedirectLink.touched,
+      #lossRedirectLink.touched {
+        transform: translate(
+          calc(-50% + 0vw),
+          calc(-50% + clamp(-5vh, 0vh, 5vh))
+        ) scale(1.1) translateY(-7%) !important;
+      }
     }
 
     @media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
@@ -319,6 +397,32 @@ html {
   .score {
     font-size: 28px;
   }
+
+      /* Aanpassing voor eind-wolkjes op tablet landscape */
+      #winRedirectLink,
+      #lossRedirectLink {
+        transform: translate(
+          calc(-50% + clamp(10vw, 15vw, 20vw)),
+          calc(-50% + clamp(-25vh, -20vh, -15vh))
+        );
+        width: clamp(20vw, 25vw, 35vw);
+      }
+
+      #winRedirectLink:hover,
+      #lossRedirectLink:hover {
+        transform: translate(
+          calc(-50% + clamp(10vw, 15vw, 20vw)),
+          calc(-50% + clamp(-25vh, -20vh, -15vh))
+        ) scale(1.1) translateY(-7%);
+      }
+
+      #winRedirectLink.touched,
+      #lossRedirectLink.touched {
+        transform: translate(
+          calc(-50% + clamp(10vw, 15vw, 20vw)),
+          calc(-50% + clamp(-25vh, -20vh, -15vh))
+        ) scale(1.1) translateY(-7%) !important;
+      }
     }
 
     @media (min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape) {
@@ -558,29 +662,29 @@ html {
     }
 
     // Touch support voor winRedirect en lossRedirect wolkjes (zoals in de eerste HTML)
-    const winRedirect = document.getElementById('winRedirect');
-    const lossRedirect = document.getElementById('lossRedirect');
+    const winRedirectLink = document.getElementById('winRedirectLink');
+    const lossRedirectLink = document.getElementById('lossRedirectLink');
     
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
-      // Touch events voor winRedirect
-      winRedirect.addEventListener("touchstart", () => {
-        winRedirect.classList.add("touched");
+      // Touch events voor winRedirectLink
+      winRedirectLink.addEventListener("touchstart", () => {
+        winRedirectLink.classList.add("touched");
       });
 
-      winRedirect.addEventListener("touchend", () => {
+      winRedirectLink.addEventListener("touchend", () => {
         setTimeout(() => {
-          winRedirect.classList.remove("touched");
+          winRedirectLink.classList.remove("touched");
         }, 300);
       });
 
-      // Touch events voor lossRedirect
-      lossRedirect.addEventListener("touchstart", () => {
-        lossRedirect.classList.add("touched");
+      // Touch events voor lossRedirectLink
+      lossRedirectLink.addEventListener("touchstart", () => {
+        lossRedirectLink.classList.add("touched");
       });
 
-      lossRedirect.addEventListener("touchend", () => {
+      lossRedirectLink.addEventListener("touchend", () => {
         setTimeout(() => {
-          lossRedirect.classList.remove("touched");
+          lossRedirectLink.classList.remove("touched");
         }, 300);
       });
     }
