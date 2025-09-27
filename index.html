@@ -97,7 +97,6 @@ html {
         calc(-50% + var(--title-y-shift))
       );
       width: var(--cloud-width);
-      height: auto;
       text-align: center;
       z-index: 1000;
       opacity: 0;
@@ -519,6 +518,10 @@ html {
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
         winRedirect.style.pointerEvents = 'auto';
+        
+        // Voeg URL preview toe
+        addUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
+        
         winRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
@@ -532,6 +535,10 @@ html {
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
         lossRedirect.style.pointerEvents = 'auto';
+        
+        // Voeg URL preview toe
+        addUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
+        
         lossRedirect.onclick = () => {
           // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
@@ -551,6 +558,44 @@ html {
           el.style.display = 'none';
           el.style.opacity = 0;
           el.onclick = null; // voorkomt dat oude redirects blijven hangen
+        }
+      });
+    }
+
+    // Functie om URL preview toe te voegen
+    function addUrlPreview(element, url) {
+      let previewDiv = null;
+      
+      element.addEventListener('mouseenter', () => {
+        if (previewDiv) return; // Voorkom duplicaten
+        
+        previewDiv = document.createElement('div');
+        previewDiv.textContent = url;
+        previewDiv.style.cssText = `
+          position: fixed;
+          bottom: 10px;
+          left: 10px;
+          background: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 3px;
+          font-size: 12px;
+          z-index: 10001;
+          pointer-events: none;
+          font-family: Arial, sans-serif;
+          white-space: nowrap;
+        `;
+        document.body.appendChild(previewDiv);
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        if (previewDiv) {
+          try {
+            document.body.removeChild(previewDiv);
+          } catch(e) {
+            // Preview div was al verwijderd
+          }
+          previewDiv = null;
         }
       });
     }
