@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- Apple -->
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 <!-- Favicon -->
@@ -14,6 +15,18 @@
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   <title>Joop van het Groenewoud - Steen Papier Schaar</title>
   <style>
+    /* CSS Reset voor cross-browser consistency */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     :root {
       --title-x-shift: clamp(20vw, 25vw, 30vw);
       --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
@@ -27,20 +40,21 @@
       --boxheight: clamp(28vw, 30vw, 32vw);
     }
     
-html {
-  height: 100%;
-  margin: 0;
-  overflow-y: auto; /*deze aanpassen voor scroll, naar overflow:none of auto*/
-  overscroll-behavior: auto; /*deze aanpassen voor scroll, naar none*/
-  position: static;
-  width: 100%;
-}
+    html {
+      height: 100%;
+      margin: 0;
+      overflow-y: auto; /*deze aanpassen voor scroll, naar overflow:none of auto*/
+      overscroll-behavior: auto; /*deze aanpassen voor scroll, naar none*/
+      position: static;
+      width: 100%;
+    }
 
     body {
       margin: 0;
-      height: 100vh;
-      height: 100dvh;
+      height: 100vh; /* Fallback voor oude browsers */
+      height: calc(var(--vh, 1vh) * 100); /* Safari-vriendelijke versie */
       max-height: 100vh;
+      max-height: calc(var(--vh, 1vh) * 100);
       overflow: hidden;
       font-family: Arial, sans-serif;
       font-size: var(--font-size);
@@ -51,7 +65,13 @@ html {
       align-items: center;
       justify-content: flex-end;
       padding-bottom: 100px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-    }  
+    }
+
+    @supports (height: 100dvh) {
+      body {
+        height: 100dvh;
+      }
+    }
     
     #background {
       position: fixed;
@@ -78,6 +98,10 @@ html {
       cursor: pointer;
       border: 2px solid white;
       border-radius: 10px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .result, .score {
@@ -93,6 +117,18 @@ html {
       left: 50%;
       top: 50%;
       transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      );
+      -webkit-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      );
+      -moz-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      );
+      -ms-transform: translate(
         calc(-50% + var(--title-x-shift)),
         calc(-50% + var(--title-y-shift))
       );
@@ -112,6 +148,18 @@ html {
         calc(-50% + var(--title-x-shift2)),
         calc(-50% + var(--title-y-shift2))
       );
+      -webkit-transform: translate(
+        calc(-50% + var(--title-x-shift2)),
+        calc(-50% + var(--title-y-shift2))
+      );
+      -moz-transform: translate(
+        calc(-50% + var(--title-x-shift2)),
+        calc(-50% + var(--title-y-shift2))
+      );
+      -ms-transform: translate(
+        calc(-50% + var(--title-x-shift2)),
+        calc(-50% + var(--title-y-shift2))
+      );
       width: var(--cloud-width2);
       height: auto;
       z-index: 10;
@@ -119,12 +167,19 @@ html {
       cursor: pointer;
     }
 
-  #wolkje_versla {
-    pointer-events: none; /* Niet aanklikbaar */
-    cursor: default;      /* Cursor niet pointer */
-  }
+    #wolkje_versla {
+      pointer-events: none; /* Niet aanklikbaar */
+      cursor: default;      /* Cursor niet pointer */
+    }
 
     @keyframes fadeInOut {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @-webkit-keyframes fadeInOut {
       0% { opacity: 0; }
       10% { opacity: 1; }
       90% { opacity: 1; }
@@ -134,35 +189,62 @@ html {
     .fade-in-out {
       display: block !important;
       animation: fadeInOut 4.5s ease-in-out;
+      -webkit-animation: fadeInOut 4.5s ease-in-out;
     }
 
-/* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
-#winRedirect,
-#lossRedirect {
-  display: none;
-  opacity: 0;
-  pointer-events: auto;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out, opacity 0.5s ease;
-}
+    /* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
+    #winRedirect,
+    #lossRedirect {
+      display: none;
+      opacity: 0;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+      -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease;
+      -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.5s ease;
+    }
 
-/* Hover effect voor de eind-wolkjes (zoals in de eerste HTML) */
-#winRedirect:hover,
-#lossRedirect:hover {
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  ) scale(1.1) translateY(-7%);
-}
+    /* Hover effect voor de eind-wolkjes */
+    #winRedirect:hover,
+    #lossRedirect:hover {
+      transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%);
+      -webkit-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%);
+      -moz-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%);
+      -ms-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%);
+    }
 
-/* Touch effect voor de eind-wolkjes */
-#winRedirect.touched,
-#lossRedirect.touched {
-  transform: translate(
-    calc(-50% + var(--title-x-shift)),
-    calc(-50% + var(--title-y-shift))
-  ) scale(1.1) translateY(-7%) !important;
-}
+    /* Touch effect voor de eind-wolkjes */
+    #winRedirect.touched,
+    #lossRedirect.touched {
+      transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%) !important;
+      -webkit-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%) !important;
+      -moz-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%) !important;
+      -ms-transform: translate(
+        calc(-50% + var(--title-x-shift)),
+        calc(-50% + var(--title-y-shift))
+      ) scale(1.1) translateY(-7%) !important;
+    }
 
     /* Responsive achtergrond */
     @media (orientation: landscape) {
@@ -175,22 +257,26 @@ html {
         --cloud-width2: min(25vw, 450px);
       }
       
-  body {
-      justify-content: center;
-      padding-bottom: 5px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-  }
-    .choice {
-      width: clamp(20vh, 25vh, 30vh);
-      height: clamp(20vh, 25vh, 30vh);
-    }
-.choices {
-  margin-top: 10px;
-}
-  .result,
-  .score {
-    font-size: clamp(16px, 26px, 48px);
-    margin-bottom: 10px;
-  }
+      body {
+        justify-content: center;
+        padding-bottom: 5px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      }
+
+      .choice {
+        width: clamp(20vh, 25vh, 30vh);
+        height: clamp(20vh, 25vh, 30vh);
+      }
+
+      .choices {
+        margin-top: 10px;
+      }
+
+      .result,
+      .score {
+        font-size: clamp(16px, 26px, 48px);
+        margin-bottom: 10px;
+      }
+
       #background {
         background-size: cover;
         background-position: center center;
@@ -203,6 +289,7 @@ html {
         background-position: 57% center;
       }
     }
+
     /* ========== SMALL DEVICES (max 320px) ========== */
     @media (max-width: 320px) {
       :root {
@@ -214,23 +301,25 @@ html {
         --cloud-width2: min(25vw, 450px);
       }
       
-  body {
-    justify-content: flex-end;
-    padding-bottom: 40px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-  }
+      body {
+        justify-content: flex-end;
+        padding-bottom: 40px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      }
 
-  .choices {
-    margin-bottom: 40px; /* extra ruimte onder choices */
-  }
-    .choice {
-      width: 60px;
-      height: 60px;
-    }
-  .result,
-  .score {
-    margin-top: 20px;
-    font-size: 28px;
-  }
+      .choices {
+        margin-bottom: 40px; /* extra ruimte onder choices */
+      }
+
+      .choice {
+        width: 60px;
+        height: 60px;
+      }
+
+      .result,
+      .score {
+        margin-top: 20px;
+        font-size: 28px;
+      }
     }
 
     @media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
@@ -243,23 +332,26 @@ html {
         --cloud-width2: min(25vw, 450px);
       }
       
-  body {
-      justify-content: flex-end;
-      padding-bottom: 0px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-  }
-.choices {
-  gap: 16px;
-  margin-bottom: 8px;
-}
-    .choice {
-      width: clamp(25vh, 30vh, 35vh);
-      height: clamp(25vh, 30vh, 35vh);
-    }
-  .result,
-  .score {
-    font-size: 32px;
-    margin-bottom: 2px;
-  }
+      body {
+        justify-content: flex-end;
+        padding-bottom: 0px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      }
+
+      .choices {
+        gap: 16px;
+        margin-bottom: 8px;
+      }
+
+      .choice {
+        width: clamp(25vh, 30vh, 35vh);
+        height: clamp(25vh, 30vh, 35vh);
+      }
+
+      .result,
+      .score {
+        font-size: 32px;
+        margin-bottom: 2px;
+      }
     }
 
     @media (min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape) {
@@ -272,25 +364,26 @@ html {
         --cloud-width2: min(25vw, 450px);
       }
       
-  body {
-      justify-content: flex-end;
-      padding-bottom: 0px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-  }
+      body {
+        justify-content: flex-end;
+        padding-bottom: 0px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      }
 
-      
-.choices {
-  gap: 16px;
-  margin-bottom: 8px;
-}
-    .choice {
-      width: clamp(25vh, 30vh, 35vh);
-      height: clamp(25vh, 30vh, 35vh);
-    }
-  .result,
-  .score {
-    font-size: 32px;
-    margin-bottom: 2px;
-  }
+      .choices {
+        gap: 16px;
+        margin-bottom: 8px;
+      }
+
+      .choice {
+        width: clamp(25vh, 30vh, 35vh);
+        height: clamp(25vh, 30vh, 35vh);
+      }
+
+      .result,
+      .score {
+        font-size: 32px;
+        margin-bottom: 2px;
+      }
     }
     
     /* ========== DESKTOP LAYOUT TWEAKS ========== */
@@ -305,19 +398,20 @@ html {
         --cloud-width2: min(55vw, 450px);
       }
       
-  body {
-    justify-content: flex-end;
-    padding-bottom: 30px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-  }
+      body {
+        justify-content: flex-end;
+        padding-bottom: 30px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      }
 
-    .choice {
-      width: clamp(20vh, 23vh, 28vh);
-      height: clamp(20vh, 23vh, 28vh);
-    }
-  .result,
-  .score {
-    font-size: 52px;
-  }
+      .choice {
+        width: clamp(20vh, 23vh, 28vh);
+        height: clamp(20vh, 23vh, 28vh);
+      }
+
+      .result,
+      .score {
+        font-size: 52px;
+      }
     }
 
     /* ========== ULTRA-WIDE SCREENS (min-width: 1921px) ========== */
@@ -331,52 +425,53 @@ html {
         --cloud-width2: min(55vw, 960px);
       }
       
-  body {
-    justify-content: flex-end;
-    padding-bottom: 20px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
-  }
+      body {
+        justify-content: flex-end;
+        padding-bottom: 20px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      }
       
-    .choice {
-      width: clamp(20vh, 25vh, 30vh);
-      height: clamp(20vh, 25vh, 30vh);
-    }
-  .result,
-  .score {
-    font-size: 96px;
-  }
+      .choice {
+        width: clamp(20vh, 25vh, 30vh);
+        height: clamp(20vh, 25vh, 30vh);
+      }
+
+      .result,
+      .score {
+        font-size: 96px;
+      }
     }
     
-  /* basisstijl */
-.url-preview {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  z-index: 10001;
-  pointer-events: none;
-  font-family: Arial, sans-serif;
-  white-space: nowrap;
-}
+    /* basisstijl */
+    .url-preview {
+      position: fixed;
+      bottom: 0px;
+      left: 0px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      z-index: 10001;
+      pointer-events: none;
+      font-family: Arial, sans-serif;
+      white-space: nowrap;
+    }
 
-/* light modus */
-@media (prefers-color-scheme: light) {
-  .url-preview {
-    background: #f5f5f5;
-    color: #111;
-    border: 1px solid rgba(0,0,0,0.2);
-  }
-}
+    /* light modus */
+    @media (prefers-color-scheme: light) {
+      .url-preview {
+        background: #f5f5f5;
+        color: #111;
+        border: 1px solid rgba(0,0,0,0.2);
+      }
+    }
 
-/* dark modus */
-@media (prefers-color-scheme: dark) {
-  .url-preview {
-    background: #2d2d2d;
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-}
+    /* dark modus */
+    @media (prefers-color-scheme: dark) {
+      .url-preview {
+        background: #2d2d2d;
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+    }
   </style>
 </head>
 <body>
@@ -401,6 +496,16 @@ html {
   <img id="wolkje_grrr" class="overlay-image" src="Wolkje_grrr.png" />
 
   <script>
+    // Fix voor Safari viewport height - PLAATS DIT ALS EERSTE
+    function setViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', vh + 'px');
+    }
+
+    setViewportHeight();
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+
     function vertaalKeuze(keuze) {
       switch (keuze) {
         case 'steen': return 'Water';
@@ -432,7 +537,7 @@ html {
       const img = document.getElementById(id);
       img.classList.add('fade-in-out');
 
-      setTimeout(() => {
+      setTimeout(function() {
         img.classList.remove('fade-in-out');
       }, 4500); // Was 1500, nu gelijk aan animatie
     }
@@ -448,7 +553,7 @@ html {
       const previousComputerScore = computerScore;
 
       if (userChoice === computerChoice) {
-        resultText = `Gelijkspel! Beiden kozen ${vertaalKeuze(userChoice)}`;
+        resultText = 'Gelijkspel! Beiden kozen ' + vertaalKeuze(userChoice);
       } else if (
         (userChoice === 'steen' && computerChoice === 'schaar') ||
         (userChoice === 'papier' && computerChoice === 'steen') ||
@@ -456,12 +561,12 @@ html {
       ) {
         // Speler wint
         userScore++;
-        resultText = `Jij wint! ${vertaalKeuze(userChoice)} verslaat ${vertaalKeuze(computerChoice)}`;
+        resultText = 'Jij wint! ' + vertaalKeuze(userChoice) + ' verslaat ' + vertaalKeuze(computerChoice);
 
         // 🔽 Wolkjeslogica voor speler die scoort
         if (previousUserScore === 0 && previousComputerScore === 0 && userScore === 1) {
           showTempImage('puntWinst');
-          setTimeout(() => {
+          setTimeout(function() {
             showTempImage('wolkje_2_uit_3');
           }, 1600);
         } else if (
@@ -481,12 +586,12 @@ html {
       } else {
         // Joop wint
         computerScore++;
-        resultText = `Joop wint! ${vertaalKeuze(computerChoice)} verslaat ${vertaalKeuze(userChoice)}`;
+        resultText = 'Joop wint! ' + vertaalKeuze(computerChoice) + ' verslaat ' + vertaalKeuze(userChoice);
         showTempImage('puntVerlies');
       }
 
       document.getElementById('result').textContent = resultText;
-      document.getElementById('score').textContent = `Jij: ${userScore} - Joop: ${computerScore}`;
+      document.getElementById('score').textContent = 'Jij: ' + userScore + ' - Joop: ' + computerScore;
 
       // Check voor einde van het spel
       if (userScore === 3) {
@@ -508,7 +613,7 @@ html {
         };
         
         // Voeg URL preview toe voor dit wolkje (na een korte delay)
-        setTimeout(() => {
+        setTimeout(function() {
           addUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
         }, 100);
       }
@@ -532,7 +637,7 @@ html {
         };
         
         // Voeg URL preview toe voor dit wolkje (na een korte delay)
-        setTimeout(() => {
+        setTimeout(function() {
           addUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
         }, 100);
       }
@@ -543,7 +648,7 @@ html {
         'continueGame', 'puntWinst', 'puntVerlies', 'wolkje_grrr', 'wolkje_2_uit_3', 'wolkje_versla', 'winRedirect', 'lossRedirect'
       ];
 
-      ids.forEach(id => {
+      ids.forEach(function(id) {
         const el = document.getElementById(id);
         if (el) {
           el.style.display = 'none';
@@ -587,23 +692,23 @@ html {
     
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
       // Touch events voor winRedirect
-      winRedirect.addEventListener("touchstart", () => {
+      winRedirect.addEventListener("touchstart", function() {
         winRedirect.classList.add("touched");
       });
 
-      winRedirect.addEventListener("touchend", () => {
-        setTimeout(() => {
+      winRedirect.addEventListener("touchend", function() {
+        setTimeout(function() {
           winRedirect.classList.remove("touched");
         }, 300);
       });
 
       // Touch events voor lossRedirect
-      lossRedirect.addEventListener("touchstart", () => {
+      lossRedirect.addEventListener("touchstart", function() {
         lossRedirect.classList.add("touched");
       });
 
-      lossRedirect.addEventListener("touchend", () => {
-        setTimeout(() => {
+      lossRedirect.addEventListener("touchend", function() {
+        setTimeout(function() {
           lossRedirect.classList.remove("touched");
         }, 300);
       });
