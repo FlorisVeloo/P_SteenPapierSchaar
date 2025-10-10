@@ -28,13 +28,25 @@
     }
 
     :root {
+      /* Fallback waardes voor oude browsers */
+      --title-x-shift: 25vw;
+      --title-y-shift: -36vh;
+      --title-x-shift2: 25vw;
+      --title-y-shift2: -36vh;
+      --cloud-width: 550px;
+      --cloud-width2: 540px;
+      --bg-size: cover;
+      --font-size: 1.5rem;
+      --boxwidth: 30vw;
+      --boxheight: 30vw;
+      
+      /* Moderne waardes met clamp en min */
       --title-x-shift: clamp(20vw, 25vw, 30vw);
-      --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+      --title-y-shift: clamp(-35vh, -36vh, -40vh);
       --title-x-shift2: clamp(20vw, 25vw, 30vw);
-      --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+      --title-y-shift2: clamp(-35vh, -36vh, -40vh);
       --cloud-width: min(60vw, 550px);
       --cloud-width2: min(55vw, 540px);
-      --bg-size: cover;
       --font-size: clamp(1.2rem, 1.5vw + 0.8rem, 2.5rem);
       --boxwidth: clamp(28vw, 30vw, 32vw);
       --boxheight: clamp(28vw, 30vw, 32vw);
@@ -43,16 +55,16 @@
     html {
       height: 100%;
       margin: 0;
-      overflow-y: auto; /*deze aanpassen voor scroll, naar overflow:none of auto*/
-      overscroll-behavior: auto; /*deze aanpassen voor scroll, naar none*/
+      overflow-y: auto;
+      overscroll-behavior: auto;
       position: static;
       width: 100%;
     }
 
     body {
       margin: 0;
-      height: 100vh; /* Fallback voor oude browsers */
-      height: calc(var(--vh, 1vh) * 100); /* Safari-vriendelijke versie */
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       max-height: 100vh;
       max-height: calc(var(--vh, 1vh) * 100);
       overflow: hidden;
@@ -64,7 +76,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      padding-bottom: 100px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+      padding-bottom: 100px;
     }
 
     @supports (height: 100dvh) {
@@ -112,64 +124,69 @@
       margin-bottom: 50px;
     }
 
+    /* FIXED: Vereenvoudigde transform voor betere cross-browser support */
     .overlay-image {
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      );
-      -webkit-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      );
-      -moz-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      );
-      -ms-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      );
       width: var(--cloud-width);
       text-align: center;
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
       cursor: pointer;
+      will-change: transform;
+      
+      /* Fallback voor browsers die moeite hebben met calc() in transform */
+      transform: translate(-50%, -50%);
+      margin-left: var(--title-x-shift);
+      margin-top: var(--title-y-shift);
+    }
+    
+    /* Moderne browsers gebruiken deze */
+    @supports (transform: translate(calc(-50% + 1vw), calc(-50% + 1vh))) {
+      .overlay-image {
+        margin-left: 0;
+        margin-top: 0;
+        transform: translate(
+          calc(-50% + var(--title-x-shift)),
+          calc(-50% + var(--title-y-shift))
+        );
+      }
     }
 
     .overlay-static {
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(
-        calc(-50% + var(--title-x-shift2)),
-        calc(-50% + var(--title-y-shift2))
-      );
-      -webkit-transform: translate(
-        calc(-50% + var(--title-x-shift2)),
-        calc(-50% + var(--title-y-shift2))
-      );
-      -moz-transform: translate(
-        calc(-50% + var(--title-x-shift2)),
-        calc(-50% + var(--title-y-shift2))
-      );
-      -ms-transform: translate(
-        calc(-50% + var(--title-x-shift2)),
-        calc(-50% + var(--title-y-shift2))
-      );
       width: var(--cloud-width2);
       height: auto;
       z-index: 10;
       pointer-events: none;
       cursor: pointer;
+      will-change: transform;
+      
+      /* Fallback voor browsers die moeite hebben met calc() in transform */
+      transform: translate(-50%, -50%);
+      margin-left: var(--title-x-shift2);
+      margin-top: var(--title-y-shift2);
+    }
+    
+    /* Moderne browsers gebruiken deze */
+    @supports (transform: translate(calc(-50% + 1vw), calc(-50% + 1vh))) {
+      .overlay-static {
+        margin-left: 0;
+        margin-top: 0;
+        transform: translate(
+          calc(-50% + var(--title-x-shift2)),
+          calc(-50% + var(--title-y-shift2))
+        );
+      }
     }
 
     #wolkje_versla {
-      pointer-events: none; /* Niet aanklikbaar */
-      cursor: default;      /* Cursor niet pointer */
+      pointer-events: none;
+      cursor: default;
     }
 
     @keyframes fadeInOut {
@@ -179,90 +196,88 @@
       100% { opacity: 0; }
     }
 
-    @-webkit-keyframes fadeInOut {
-      0% { opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
     .fade-in-out {
       display: block !important;
       animation: fadeInOut 4.5s ease-in-out;
-      -webkit-animation: fadeInOut 4.5s ease-in-out;
     }
 
-    /* Alleen deze twee wolkjes mogen klikbaar zijn bij 3-0 */
     #winRedirect,
     #lossRedirect {
       display: none;
       opacity: 0;
       pointer-events: auto;
       cursor: pointer;
-      transition: transform 0.3s ease-in-out, opacity 0.5s ease;
-      -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease;
-      -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.5s ease;
+      transition: transform 0.3s ease-in-out, opacity 0.5s ease, margin 0.3s ease-in-out;
     }
 
-    /* Hover effect voor de eind-wolkjes */
+    /* Hover effect met fallback */
     #winRedirect:hover,
     #lossRedirect:hover {
-      transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%);
-      -webkit-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%);
-      -moz-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%);
-      -ms-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%);
+      /* Fallback voor oude browsers */
+      transform: translate(-50%, -50%) scale(1.1);
+      margin-top: calc(var(--title-y-shift) - 7vh);
+    }
+    
+    /* Moderne browsers */
+    @supports (transform: translate(calc(-50% + 1vw), calc(-50% + 1vh))) {
+      #winRedirect:hover,
+      #lossRedirect:hover {
+        margin-top: 0;
+        transform: translate(
+          calc(-50% + var(--title-x-shift)),
+          calc(-50% + var(--title-y-shift))
+        ) scale(1.1) translateY(-7%);
+      }
     }
 
-    /* Touch effect voor de eind-wolkjes */
+    /* Touch effect met fallback */
     #winRedirect.touched,
     #lossRedirect.touched {
-      transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%) !important;
-      -webkit-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%) !important;
-      -moz-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%) !important;
-      -ms-transform: translate(
-        calc(-50% + var(--title-x-shift)),
-        calc(-50% + var(--title-y-shift))
-      ) scale(1.1) translateY(-7%) !important;
+      /* Fallback voor oude browsers */
+      transform: translate(-50%, -50%) scale(1.1) !important;
+      margin-top: calc(var(--title-y-shift) - 7vh) !important;
+    }
+    
+    /* Moderne browsers */
+    @supports (transform: translate(calc(-50% + 1vw), calc(-50% + 1vh))) {
+      #winRedirect.touched,
+      #lossRedirect.touched {
+        margin-top: 0 !important;
+        transform: translate(
+          calc(-50% + var(--title-x-shift)),
+          calc(-50% + var(--title-y-shift))
+        ) scale(1.1) translateY(-7%) !important;
+      }
     }
 
     /* Responsive achtergrond */
     @media (orientation: landscape) {
       :root {
+        /* Fallback waardes */
+        --title-x-shift: 25vw;
+        --title-y-shift: -36vh;
+        --title-x-shift2: 25vw;
+        --title-y-shift2: -36vh;
+        --cloud-width: 450px;
+        --cloud-width2: 450px;
+        
+        /* Moderne waardes */
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-35vh, -36vh, -40vh);
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
-        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh);
         --cloud-width: min(30vw, 450px);
         --cloud-width2: min(25vw, 450px);
       }
       
       body {
         justify-content: center;
-        padding-bottom: 5px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+        padding-bottom: 5px;
       }
 
       .choice {
+        width: 25vh;
+        height: 25vh;
         width: clamp(20vh, 25vh, 30vh);
         height: clamp(20vh, 25vh, 30vh);
       }
@@ -273,6 +288,7 @@
 
       .result,
       .score {
+        font-size: 26px;
         font-size: clamp(16px, 26px, 48px);
         margin-bottom: 10px;
       }
@@ -293,21 +309,30 @@
     /* ========== SMALL DEVICES (max 320px) ========== */
     @media (max-width: 320px) {
       :root {
+        /* Fallback waardes */
+        --title-x-shift: 25vw;
+        --title-y-shift: -36vh;
+        --title-x-shift2: 25vw;
+        --title-y-shift2: -36vh;
+        --cloud-width: 450px;
+        --cloud-width2: 450px;
+        
+        /* Moderne waardes */
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-35vh, -36vh, -40vh);
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
-        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh);
         --cloud-width: min(30vw, 450px);
         --cloud-width2: min(25vw, 450px);
       }
       
       body {
         justify-content: flex-end;
-        padding-bottom: 40px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+        padding-bottom: 40px;
       }
 
       .choices {
-        margin-bottom: 40px; /* extra ruimte onder choices */
+        margin-bottom: 40px;
       }
 
       .choice {
@@ -324,17 +349,26 @@
 
     @media (max-width: 1024px) and (min-height: 350px) and (orientation: landscape) {
       :root {
+        /* Fallback waardes */
+        --title-x-shift: 25vw;
+        --title-y-shift: -36vh;
+        --title-x-shift2: 25vw;
+        --title-y-shift2: -36vh;
+        --cloud-width: 450px;
+        --cloud-width2: 450px;
+        
+        /* Moderne waardes */
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-35vh, -36vh, -40vh);
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
-        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh);
         --cloud-width: min(30vw, 450px);
         --cloud-width2: min(25vw, 450px);
       }
       
       body {
         justify-content: flex-end;
-        padding-bottom: 0px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+        padding-bottom: 0px;
       }
 
       .choices {
@@ -343,6 +377,8 @@
       }
 
       .choice {
+        width: 30vh;
+        height: 30vh;
         width: clamp(25vh, 30vh, 35vh);
         height: clamp(25vh, 30vh, 35vh);
       }
@@ -356,17 +392,26 @@
 
     @media (min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape) {
       :root {
+        /* Fallback waardes */
+        --title-x-shift: 25vw;
+        --title-y-shift: -36vh;
+        --title-x-shift2: 25vw;
+        --title-y-shift2: -36vh;
+        --cloud-width: 450px;
+        --cloud-width2: 450px;
+        
+        /* Moderne waardes */
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-35vh, -36vh, -40vh);
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
-        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh);
         --cloud-width: min(30vw, 450px);
         --cloud-width2: min(25vw, 450px);
       }
       
       body {
         justify-content: flex-end;
-        padding-bottom: 0px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+        padding-bottom: 0px;
       }
 
       .choices {
@@ -375,6 +420,8 @@
       }
 
       .choice {
+        width: 30vh;
+        height: 30vh;
         width: clamp(25vh, 30vh, 35vh);
         height: clamp(25vh, 30vh, 35vh);
       }
@@ -386,24 +433,34 @@
       }
     }
     
-    /* ========== DESKTOP LAYOUT TWEAKS ========== */
     /* ========== DESKTOP (min-width: 1025px) ========== */
     @media (min-width: 1025px) {
       :root {
+        /* Fallback waardes */
+        --title-x-shift: 25vw;
+        --title-y-shift: -33vh;
+        --title-x-shift2: 25vw;
+        --title-y-shift2: -36vh;
+        --cloud-width: 450px;
+        --cloud-width2: 450px;
+        
+        /* Moderne waardes */
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-32vh, -33vh, -38vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-32vh, -33vh, -38vh);
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
-        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh);
         --cloud-width: min(60vw, 450px);
         --cloud-width2: min(55vw, 450px);
       }
       
       body {
         justify-content: flex-end;
-        padding-bottom: 30px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+        padding-bottom: 30px;
       }
 
       .choice {
+        width: 23vh;
+        height: 23vh;
         width: clamp(20vh, 23vh, 28vh);
         height: clamp(20vh, 23vh, 28vh);
       }
@@ -417,20 +474,31 @@
     /* ========== ULTRA-WIDE SCREENS (min-width: 1921px) ========== */
     @media (min-width: 1921px) {
       :root {
+        /* Fallback waardes */
+        --title-x-shift: 25vw;
+        --title-y-shift: -36vh;
+        --title-x-shift2: 25vw;
+        --title-y-shift2: -36vh;
+        --cloud-width: 960px;
+        --cloud-width2: 960px;
+        
+        /* Moderne waardes */
         --title-x-shift: clamp(20vw, 25vw, 30vw);
-        --title-y-shift: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift: clamp(-35vh, -36vh, -40vh);
         --title-x-shift2: clamp(20vw, 25vw, 30vw);
-        --title-y-shift2: clamp(-35vh, -36vh, -40vh); /* - is omhoog, + naar beneden */
+        --title-y-shift2: clamp(-35vh, -36vh, -40vh);
         --cloud-width: min(60vw, 960px);
         --cloud-width2: min(55vw, 960px);
       }
       
       body {
         justify-content: flex-end;
-        padding-bottom: 20px; /* Zorgt ervoor dat het niet te strak tegen de onderkant staat */
+        padding-bottom: 20px;
       }
       
       .choice {
+        width: 25vh;
+        height: 25vh;
         width: clamp(20vh, 25vh, 30vh);
         height: clamp(20vh, 25vh, 30vh);
       }
@@ -518,11 +586,10 @@
     let userScore = 0;
     let computerScore = 0;
     let paused = false;
-    let gameEnded = false; // Nieuwe variabele om bij te houden of het spel is geëindigd
+    let gameEnded = false;
 
     const options = ['steen', 'papier', 'schaar'];
 
-    // Functie om het spel volledig te resetten
     function resetGame() {
       userScore = 0;
       computerScore = 0;
@@ -539,11 +606,10 @@
 
       setTimeout(function() {
         img.classList.remove('fade-in-out');
-      }, 4500); // Was 1500, nu gelijk aan animatie
+      }, 4500);
     }
     
     function play(userChoice) {
-      // Als het spel al is geëindigd, blokkeer nieuwe moves
       if (paused || gameEnded) return;
 
       const computerChoice = options[Math.floor(Math.random() * 3)];
@@ -559,11 +625,9 @@
         (userChoice === 'papier' && computerChoice === 'steen') ||
         (userChoice === 'schaar' && computerChoice === 'papier')
       ) {
-        // Speler wint
         userScore++;
         resultText = 'Jij wint! ' + vertaalKeuze(userChoice) + ' verslaat ' + vertaalKeuze(computerChoice);
 
-        // 🔽 Wolkjeslogica voor speler die scoort
         if (previousUserScore === 0 && previousComputerScore === 0 && userScore === 1) {
           showTempImage('puntWinst');
           setTimeout(function() {
@@ -584,7 +648,6 @@
         }
 
       } else {
-        // Joop wint
         computerScore++;
         resultText = 'Joop wint! ' + vertaalKeuze(computerChoice) + ' verslaat ' + vertaalKeuze(userChoice);
         showTempImage('puntVerlies');
@@ -593,50 +656,37 @@
       document.getElementById('result').textContent = resultText;
       document.getElementById('score').textContent = 'Jij: ' + userScore + ' - Joop: ' + computerScore;
 
-      // Check voor einde van het spel
       if (userScore === 3) {
-        gameEnded = true; // Markeer spel als geëindigd
+        gameEnded = true;
         const winRedirect = document.getElementById('winRedirect');
         winRedirect.style.display = 'block';
         winRedirect.style.opacity = 1;
         
-        // Debug: eerst zonder URL preview testen
-        console.log('Win wolkje wordt zichtbaar');
-        
         winRedirect.onclick = function(e) {
-          console.log('Win wolkje geklikt!');
           e.preventDefault();
           e.stopPropagation();
-          // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
           window.location.href = 'https://onderweg4.joopvanhetgroenewoud.nl';
         };
         
-        // Voeg URL preview toe voor dit wolkje (na een korte delay)
         setTimeout(function() {
           addUrlPreview(winRedirect, 'https://onderweg4.joopvanhetgroenewoud.nl');
         }, 100);
       }
 
       if (computerScore === 3) {
-        gameEnded = true; // Markeer spel als geëindigd
+        gameEnded = true;
         const lossRedirect = document.getElementById('lossRedirect');
         lossRedirect.style.display = 'block';
         lossRedirect.style.opacity = 1;
         
-        // Debug: eerst zonder URL preview testen
-        console.log('Loss wolkje wordt zichtbaar');
-        
         lossRedirect.onclick = function(e) {
-          console.log('Loss wolkje geklikt!');
           e.preventDefault();
           e.stopPropagation();
-          // Reset het spel voordat we naar de andere pagina gaan
           resetGame();
           window.location.href = 'https://joopvanhetgroenewoud.nl';
         };
         
-        // Voeg URL preview toe voor dit wolkje (na een korte delay)
         setTimeout(function() {
           addUrlPreview(lossRedirect, 'https://joopvanhetgroenewoud.nl');
         }, 100);
@@ -653,17 +703,16 @@
         if (el) {
           el.style.display = 'none';
           el.style.opacity = 0;
-          el.onclick = null; // voorkomt dat oude redirects blijven hangen
+          el.onclick = null;
         }
       });
     }
 
-    // Eenvoudige URL preview functie
     function addUrlPreview(element, url) {
       let previewDiv = null;
       
       const showPreview = function() {
-        if (previewDiv) return; // Voorkom duplicaten
+        if (previewDiv) return;
 
         previewDiv = document.createElement('div');
         previewDiv.textContent = url;
@@ -678,20 +727,15 @@
         }
       };
       
-      // Voeg event listeners toe
       element.addEventListener('mouseenter', showPreview);
       element.addEventListener('mouseleave', hidePreview);
-      
-      // Extra cleanup voor als element wordt verwijderd
       element.addEventListener('click', hidePreview);
     }
 
-    // Touch support voor de eind-wolkjes
     const winRedirect = document.getElementById('winRedirect');
     const lossRedirect = document.getElementById('lossRedirect');
     
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
-      // Touch events voor winRedirect
       winRedirect.addEventListener("touchstart", function() {
         winRedirect.classList.add("touched");
       });
@@ -702,7 +746,6 @@
         }, 300);
       });
 
-      // Touch events voor lossRedirect
       lossRedirect.addEventListener("touchstart", function() {
         lossRedirect.classList.add("touched");
       });
@@ -714,15 +757,12 @@
       });
     }
 
-    // Reset het spel wanneer de pagina wordt geladen (voor als iemand terugkomt via browser terug knop)
     window.addEventListener('pageshow', function(event) {
       if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        // Pagina werd geladen uit cache (terug knop gebruikt)
         resetGame();
       }
     });
 
-    // Extra veiligheid: reset bij page load
     window.addEventListener('load', function() {
       resetGame();
     });
