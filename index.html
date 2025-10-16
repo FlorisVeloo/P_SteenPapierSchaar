@@ -809,7 +809,9 @@
     window.addEventListener('load', function() {
       resetGame();
     });
-    <!-- DEBUG: Screen info overlay -->
+
+    </script>
+   <!-- DEBUG: Screen info overlay - DIT MOET BUITEN DE SCRIPT TAG! -->
     <div id="debugInfo" style="
       position: fixed;
       top: 10px;
@@ -886,6 +888,6 @@
     document.getElementById('debugInfo').addEventListener('dblclick', function() {
       this.style.display = this.style.display === 'none' ? 'block' : 'none';
     });
-  </script>
+    </script>
 </body>
 </html>
