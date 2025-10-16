@@ -405,7 +405,6 @@
       body {
         justify-content: flex-end;
         padding-bottom: 0px;
-        background-color: red !important; /* Test of query matcht */
       }
 
       .choices {
@@ -449,7 +448,6 @@
       body {
         justify-content: flex-end;
         padding-bottom: 0px;
-        background-color: red !important; /* Test of query matcht */
       }
 
       .choices {
@@ -810,6 +808,83 @@
 
     window.addEventListener('load', function() {
       resetGame();
+    });
+    <!-- DEBUG: Screen info overlay -->
+    <div id="debugInfo" style="
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.9);
+      color: lime;
+      padding: 15px;
+      font-family: monospace;
+      font-size: 14px;
+      z-index: 99999;
+      border: 2px solid lime;
+      border-radius: 5px;
+      line-height: 1.6;
+      pointer-events: none;
+    ">
+      <div>Width: <span id="debugWidth"></span>px</div>
+      <div>Height: <span id="debugHeight"></span>px</div>
+      <div>Orientation: <span id="debugOrientation"></span></div>
+      <div>Ratio: <span id="debugRatio"></span></div>
+      <div>Device Pixel Ratio: <span id="debugDPR"></span></div>
+      <div style="margin-top: 10px; border-top: 1px solid lime; padding-top: 10px;">
+        <div>vw: <span id="debugVW"></span>px</div>
+        <div>vh: <span id="debugVH"></span>px</div>
+      </div>
+      <div style="margin-top: 10px; border-top: 1px solid lime; padding-top: 10px; color: yellow;">
+        <strong>Active Media Query:</strong><br>
+        <span id="debugMediaQuery" style="font-size: 12px;"></span>
+      </div>
+    </div>
+    
+    <script>
+    function updateDebugInfo() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const orientation = width > height ? 'landscape' : 'portrait';
+      const ratio = (width / height).toFixed(2);
+      
+      document.getElementById('debugWidth').textContent = width;
+      document.getElementById('debugHeight').textContent = height;
+      document.getElementById('debugOrientation').textContent = orientation;
+      document.getElementById('debugRatio').textContent = ratio;
+      document.getElementById('debugDPR').textContent = window.devicePixelRatio;
+      document.getElementById('debugVW').textContent = (width / 100).toFixed(2);
+      document.getElementById('debugVH').textContent = (height / 100).toFixed(2);
+      
+      // Detecteer welke media query actief is
+      let activeQuery = 'none';
+      
+      if (window.matchMedia('(max-width: 320px)').matches) {
+        activeQuery = 'Small devices (≤320px)';
+      } else if (window.matchMedia('(max-width: 1024px) and (min-height: 350px) and (orientation: landscape)').matches) {
+        activeQuery = '1024px landscape (350h+)';
+      } else if (window.matchMedia('(min-width: 1025px) and (max-width: 1500px) and (max-height: 750px) and (orientation: landscape)').matches) {
+        activeQuery = '1025-1500px landscape (≤750h)';
+      } else if (window.matchMedia('(min-width: 1025px)').matches) {
+        activeQuery = 'Desktop (≥1025px)';
+      } else if (window.matchMedia('(min-width: 1921px)').matches) {
+        activeQuery = 'Ultra-wide (≥1921px)';
+      } else if (window.matchMedia('(orientation: landscape)').matches) {
+        activeQuery = 'Generic landscape';
+      } else if (window.matchMedia('(orientation: portrait)').matches) {
+        activeQuery = 'Generic portrait';
+      }
+      
+      document.getElementById('debugMediaQuery').textContent = activeQuery;
+    }
+    
+    updateDebugInfo();
+    window.addEventListener('resize', updateDebugInfo);
+    window.addEventListener('orientationchange', updateDebugInfo);
+    
+    // Dubbelklik om debug info te verbergen/tonen
+    document.getElementById('debugInfo').style.pointerEvents = 'auto';
+    document.getElementById('debugInfo').addEventListener('dblclick', function() {
+      this.style.display = this.style.display === 'none' ? 'block' : 'none';
     });
   </script>
 </body>
